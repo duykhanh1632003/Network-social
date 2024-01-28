@@ -14,37 +14,96 @@ html,
 
 }
 
-input[type="text"],input[type="password"], input[type="email"], textarea, input[type="number"] {
-  @apply w-full border my-2 py-2 px-3 rounded-2xl;
+.leftheader{
+  z-index: 3;
 }
 
-/* CSS để thay đổi màu sắc của dấu tích khi được chọn */
-input[type="checkbox"]:checked + svg {
-stroke: #0077cc; /* Màu xanh nước biển */
+.homepage{
+  z-index: 1;
 }
 
-/* CSS để ẩn đi dấu tích mặc định của trình duyệt */
-input[type="checkbox"] {
-appearance: none;
--webkit-appearance: none;
--moz-appearance: none;
-outline: none;
-}
-
-/* CSS để tạo dấu tích tùy chỉnh sử dụng trường path trong svg */
-input[type="checkbox"] + svg path {
-fill: none;
-stroke-width: 1.5;
-stroke-linecap: round;
-stroke-linejoin: round;
+.slick-prev:before{
+  font-size: 49px;
+  position: absolute;
+  margin-left: 29px;
+  margin-top: 8px;
+  z-index: 100;
 }
 
 
-button{
-  @apply bg-gray-300;
+.slick-next:before {
+  font-size: 49px !important;
+  position: absolute;
+  margin-right: 102px !important;
+  margin-top: 8px;
+  z-index: 2;
 }
 
-button.primary{
-  background-color: F53850;
-  @apply bg-primary p-2 w-full text-white rounded-2xl;
+.slick-arrow .slick-next{
+  position: absolute;
+  margin-right: 102px !important;
+
+}
+
+.img-carousel{
+  z-index: 1 !important;
+  height: 300px;
+  width: 500px;
+}
+.slick-slide .slick-active .slick-current{
+  height: 100px;
+  width: 500px;
+}
+
+.react-multiple-carousel__arrow::before{
+  background: #FFFFFF;
+  width: 50px;
+  height: 50px;
+  border-radius:100%;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  
+}
+
+.main-carousel{
+  height: 250px;
+  width: 140px;
+  border-radius: 100%;
+  z-index: 1;
+  position: relative;
+  
+}
+
+.img-carousel{
+  position: relative;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.img-ca{
+  object-fit: cover;
+  width: 142px;
+  height: 250px;
+  border-radius: 5%;
+  z-index: 1;
+}
+
+.text-carousel{
+  font-size: 100px;
+  position: absolute;
+  z-index: 3;
+}
+
+.card{
+  height: 250px;
+  border-radius: 5%;
+  width: 141px;
+}
+
+.img-card{
+  object-fit: fill;
 }

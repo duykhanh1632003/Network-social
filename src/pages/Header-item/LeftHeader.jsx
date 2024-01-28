@@ -12,7 +12,7 @@ const LeftHeader = () => {
   };
 
   return (
-    <div className="h-full">
+    <div className="h-full leftheader">
       {!isComponentVisible ? (
         <div className="flex w-[304px] pl-[16px]">
           <Link to={"/"} className="w-[40px] rounded-full">
@@ -29,7 +29,8 @@ const LeftHeader = () => {
         </div>
       ) : (
         <div
-          className="flex w-[304px]  h-[505px] bg-white ml-0 flex-col shadow-lg rounded-lg z-1000 "
+          className="flex w-[304px] h-[505px] bg-white ml-0 flex-col shadow-lg rounded-lg flex-1 leftheader"
+          style={{ zIndex: 2 }}
           ref={ref}
         >
           <div className="flex h-[52px] ml-[8px]">
