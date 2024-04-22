@@ -107,3 +107,36 @@ html,
 .img-card{
   object-fit: fill;
 }
+
+.modal-header{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+
+@layer utilities{
+  .item-header-middle{
+    @apply w-[107px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500
+  }
+  .icon-header-text-middle-not-active{
+    @apply text-black text-3xl
+  }
+
+  .icon-header-text-middle-active{
+    @apply text-blue-600 text-3xl
+  }
+  .middle-header-box{
+    @apply ml-[145px] w-[590px] flex justify-between mr-[264px]
+  }
+
+  .box-right-top-bar-item{
+    @apply w-[38px] h-[38px] rounded-full flex items-center justify-center bg-gray-100 mr-[8px] cursor-pointer
+  }
+  .avatar-topbar{
+    @apply text-2xl rounded-full relative
+  }
+  .box-left-bar-item{
+    @apply flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer
+  }
+}

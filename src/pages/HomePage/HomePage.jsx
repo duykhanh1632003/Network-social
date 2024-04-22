@@ -1,9 +1,9 @@
-import LeftSideBar from "./LeftSideBar";
-import MiddleSideBar from "./MiddleSideBar";
-import RightSideBar from "./RightSideBar";
+import LeftSideBar from "./Home-left/LeftSideBar";
+import MiddleSideBar from "./Home-middle/MiddleSideBar";
+import RightSideBar from "./Home-right/RightSideBar";
 const HomePage = () => {
   return (
-    <div className="flex h-screen  bg-blue-500 w-full mt-4 homepage">
+    <div className="flex h-screen dark:bg-black bg-[#F0F2F5] w-full pt-4">
       <LeftSideBar />
       <MiddleSideBar />
       <RightSideBar />

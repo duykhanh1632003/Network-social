@@ -19,7 +19,7 @@ const LeftHeader = () => {
             <img src="/src/assets/Facebook_Logo_(2019).png" alt="logo" />
           </Link>
           <div className="w-[237px] flex bg-slate-600 rounded-full pl-3 ml-[7px]">
-            <CiSearch className="mt-3 text-gray-300 mr-2 text-md" />
+            <CiSearch className="mt-[13px] text-gray-300 mr-2 text-md " />
             <input
               className="border-none bg-slate-600 focus:border-transparent focus:outline-none w-13 rounded-full"
               placeholder="Tìm kiếm trên facebook"
@@ -53,7 +53,7 @@ const LeftHeader = () => {
               Chỉnh sửa
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -70,7 +70,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -87,7 +87,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -104,7 +104,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -121,7 +121,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -138,7 +138,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -155,7 +155,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img
@@ -172,7 +172,7 @@ const LeftHeader = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col ml-[16px] pl-1 pb-1 hover:bg-gray-200 hover:bg-opacity-50 hover:rounded-2xl cursor-pointer">
+          <div className="box-left-bar-item">
             <div className="flex mt-[7px] pr-[16px]">
               <div className="w-[38px] bg-blue-700 h-[38px] mr-[14px] rounded-full flex items-center justify-center ">
                 <img

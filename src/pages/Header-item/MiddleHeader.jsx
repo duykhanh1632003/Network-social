@@ -3,32 +3,65 @@ import { FaUserFriends } from "react-icons/fa";
 import { MdScreenSearchDesktop } from "react-icons/md";
 import { LuWarehouse } from "react-icons/lu";
 import { RiGroup2Line } from "react-icons/ri";
+import { Link, useLocation } from "react-router-dom";
 
 const MiddleHeader = () => {
+  const location = useLocation().pathname;
+  console.log(location);
   return (
-    <div className="ml-[145px] w-[590px] flex justify-between mr-[264px]">
-        <div className="w-[108px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500">
-          <AiFillHome className="text-black	text-3xl " />
-        </div>
-
-        <div className="w-[107px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500">
-          {" "}
-          <FaUserFriends className="text-black	 text-3xl" />
-        </div>
-        <div className="w-[107px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500">
-          {" "}
-          <MdScreenSearchDesktop className="text-black	text-3xl" />
-        </div>
-        <div className="w-[107px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500">
-          {" "}
-          <LuWarehouse className="text-black	 text-3xl" />
-        </div>
-        <div className="w-[108px] ml-[4px] flex items-center justify-center mb-[10px] cursor-pointer h-full hover:bg-gray-100 hover:bg-opacity-90 hover:rounded-lg hover:mb-1 active:text-blue-500">
-          {" "}
-          <RiGroup2Line className="text-black	 text-3xl" />
-        </div>
+    <Link to={"/"} className="middle-header-box">
+      <div className="item-header-middle">
+        <AiFillHome
+          className={`${
+            location === "/"
+              ? "icon-header-text-middle-active"
+              : "icon-header-text-middle-not-active"
+          }`}
+        />
       </div>
-  )
-}
 
-export default MiddleHeader
+      <Link to={"friends"} className="item-header-middle">
+        {" "}
+        <FaUserFriends
+          className={`${
+            location === "/friends"
+              ? "icon-header-text-middle-active"
+              : "icon-header-text-middle-not-active"
+          }`}
+        />
+      </Link>
+      <Link to={"watch"} className="item-header-middle">
+        {" "}
+        <MdScreenSearchDesktop
+          className={`${
+            location === "/watch"
+              ? "icon-header-text-middle-active"
+              : "icon-header-text-middle-not-active"
+          }`}
+        />
+      </Link>
+      <Link to={"market"} className="item-header-middle">
+        {" "}
+        <LuWarehouse
+          className={`${
+            location === "/market"
+              ? "icon-header-text-middle-active"
+              : "icon-header-text-middle-not-active"
+          }`}
+        />
+      </Link>
+      <Link to={"group"} className="item-header-middle">
+        {" "}
+        <RiGroup2Line
+          className={`${
+            location === "/group"
+              ? "icon-header-text-middle-active"
+              : "icon-header-text-middle-not-active"
+          }`}
+        />
+      </Link>
+    </Link>
+  );
+};
+
+export default MiddleHeader;

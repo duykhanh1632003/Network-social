@@ -1,5 +1,5 @@
 const RightSideBar = () => {
-  return <div >right</div>;
+  return <div className="ml-[113px]  h-screen"></div>;
 };
 
 export default RightSideBar;

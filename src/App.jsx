@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import Header from "./pages/Header";
+import SignUp from "./pages/Auth/SignUp/SignUp";
+import SignIn from "./pages/Auth/SignIn/SignIn";
+import Header from "./pages/HomePage/Header";
 import { ClickContextProvider } from "./context/ClickContext";
 import HomePage from "./pages/HomePage/HomePage";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { postRegisterUser } from "../util/axios";
+import { Link, useNavigate } from "react-router-dom";
+import { postRegisterUser } from "../../../util/axios";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
@@ -8,7 +8,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function registerUser(e) {
     e.preventDefault();
@@ -16,7 +16,7 @@ export default function SignUp() {
     console.log("check", email, name, password);
     const response = await postRegisterUser({ name, email, password });
     if (response) {
-      navigate('/')
+      navigate("/");
     }
   }
 
