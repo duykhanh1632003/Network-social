@@ -2,11 +2,10 @@ import { useState } from "react";
 import CreatePost from "./CreatePost";
 
 const Posts = () => {
-  const [show, setShow] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
   return (
-    <div className="h-[67px] w-full bg-red-300 flex items-center justify-start ">
+    <div className="h-[67px] w-full bg-[#FFFFFF] flex items-center justify-start ">
       <div className="w-[40px] h-[40px] rounded-full ml-[13px] mt-[10px]">
         <img
           className="rounded-full w-[40px] h-[40px]"
@@ -14,11 +13,15 @@ const Posts = () => {
           alt="avatar"
         />
       </div>
-      <input
-        onClick={() => setModalShow(true)}
-        className="w-[509px] h-[39px] rounded-3xl mt-[10px] ml-[8px] pl-[14px] cursor-pointer border-none outline-none"
-        placeholder="Toàn ơi bạn đang nghĩ gì thế?"
-      />
+      <div className="w-[509px] h-[39px] bg-[#F0F2F5] rounded-3xl mt-[10px] ml-[8px] pl-[14px] cursor-pointer border-none outline-none hover:bg-[#E4E6E9]">
+        <button
+          onClick={() => setModalShow(true)}
+          className="flex items-center mt-[9px] text-[#65676B]"
+        >
+          Toàn ơi bạn đang nghĩ gì thế?
+        </button>
+      </div>
+
       <CreatePost show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );

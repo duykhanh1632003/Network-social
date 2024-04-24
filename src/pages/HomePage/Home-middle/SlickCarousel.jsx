@@ -20,7 +20,7 @@ export default function SlickCarousel() {
     },
   };
   return (
-    <div className="">
+    <div className="bg-[#F0F2F5]">
       <Carousel responsive={responsive}>
         <div className="card relative w-[250px] z-10 bg-white cursor-pointer ">
           <div className="w-[40px] h-[40px] bg-white absolute rounded-full mt-[144px] ml-[54px]">

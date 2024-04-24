@@ -6,6 +6,7 @@ import { RiGroupLine } from "react-icons/ri";
 import { PiClockCounterClockwiseBold } from "react-icons/pi";
 import { IoMdBookmark } from "react-icons/io";
 import { BiSolidChevronDown } from "react-icons/bi";
+import ImageUpload from "../../../components/ImageUpload";
 
 const LeftSideBar = () => {
   return (
@@ -74,6 +75,7 @@ const LeftSideBar = () => {
           Xem thêm
         </div>
       </div>
+      <ImageUpload />
     </div>
   );
 };

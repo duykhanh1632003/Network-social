@@ -3,13 +3,13 @@ import { FaUserFriends } from "react-icons/fa";
 import { MdScreenSearchDesktop } from "react-icons/md";
 import { LuWarehouse } from "react-icons/lu";
 import { RiGroup2Line } from "react-icons/ri";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 
 const MiddleHeader = () => {
   const location = useLocation().pathname;
   console.log(location);
   return (
-    <Link to={"/"} className="middle-header-box">
+    <NavLink to={"/"} className="middle-header-box">
       <div className="item-header-middle">
         <AiFillHome
           className={`${
@@ -20,7 +20,7 @@ const MiddleHeader = () => {
         />
       </div>
 
-      <Link to={"friends"} className="item-header-middle">
+      <NavLink to={"/friends"} className="item-header-middle">
         {" "}
         <FaUserFriends
           className={`${
@@ -29,8 +29,8 @@ const MiddleHeader = () => {
               : "icon-header-text-middle-not-active"
           }`}
         />
-      </Link>
-      <Link to={"watch"} className="item-header-middle">
+      </NavLink>
+      <NavLink to={"/watch"} className="item-header-middle">
         {" "}
         <MdScreenSearchDesktop
           className={`${
@@ -39,8 +39,8 @@ const MiddleHeader = () => {
               : "icon-header-text-middle-not-active"
           }`}
         />
-      </Link>
-      <Link to={"market"} className="item-header-middle">
+      </NavLink>
+      <NavLink to={"/market"} className="item-header-middle">
         {" "}
         <LuWarehouse
           className={`${
@@ -49,8 +49,8 @@ const MiddleHeader = () => {
               : "icon-header-text-middle-not-active"
           }`}
         />
-      </Link>
-      <Link to={"group"} className="item-header-middle">
+      </NavLink>
+      <NavLink to={"/group"} className="item-header-middle">
         {" "}
         <RiGroup2Line
           className={`${
@@ -59,8 +59,8 @@ const MiddleHeader = () => {
               : "icon-header-text-middle-not-active"
           }`}
         />
-      </Link>
-    </Link>
+      </NavLink>
+    </NavLink>
   );
 };
 
