@@ -1,28 +1,29 @@
-"use strict"
+"use strict";
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("../helpers/asyncHandler");
-const { AuthFailError, NotFoundError } = require("../core/error.response");
-const { findByUserId } = require("../services/keytoken.service");
+const { NotFoundError, AuthFailError } = require("../core/error.response");
+const { findByUserId } = require("../services/keyToken.service");
 const HEADER = {
   API_KEY: "x-api-key",
   AUTHORIZATION: "authorization",
   CLIENT_ID: "x-client-id",
-  REFRESHTOKEN: "refreshtoken",
+  REFRESHTOKEN: "refreshToken",
 };
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
-    const accessToken = jwt.sign(payload, publicKey, {
+    const accessToken = await jwt.sign(payload, publicKey, {
       expiresIn: "2 days",
     });
-    const refreshToken = jwt.sign(payload, privateKey, {
+    const refreshToken = await jwt.sign(payload, privateKey, {
       expiresIn: "7 days",
     });
-    jwt.verify(accessToken, publicKey, (decode, err) => {
+
+    jwt.verify(accessToken, publicKey, (err, decode) => {
       if (err) {
-        console.log("Fail to verify tokeb", err);
+        console.log("Error verifying token:", err);
       } else {
-        console.log("Decode verify", decode);
+        console.log("decode verify", decode);
       }
     });
     return { accessToken, refreshToken };
@@ -30,29 +31,50 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
     throw e;
   }
 };
+const authentication = asyncHandler(async (req, res, next) => {
+  /* 1. Check userId missing??
+  2 .get accessToken
+  3. verifyToken
+  4. check user in dbs
+  5, Check keystore with this userId
+  6. Return next
+  */
 
-const authentication = asyncHandler( async (req, res, next) => {
-    const userId = req.headers[HEADER.CLIENT_ID]
-    if (!userId) throw new AuthFailError("userID Invalid request")
-    
-    const keyStore = await findByUserId(userId)
-    if (!keyStore) throw new NotFoundError("keyStore not found request")
-    
-    const accessToken = await req.headers[HEADER.AUTHORIZATION];
-    if (!accessToken) throw new NotFoundError("access not found token")
-    
+  const userId = req.headers[HEADER.CLIENT_ID];
+  if (!userId) throw new AuthFailureError("userId Invalid request");
+
+  //2
+  const keyStore = await findByUserId(userId);
+  if (!keyStore) throw new NotFoundError("keyStore not found request");
+
+  if (req.headers[HEADER.REFRESHTOKEN]) {
     try {
-        const decode = jwt.verify(accessToken, keyStore.publicKey)
-        if (userId !== decode.userId) {
-            throw new AuthFailError("Invalid decode")
-        }
-        req.keyStore = keyStore
-        req.user = decode
-        return next()
-    } catch (e) {
-        throw error
+      const refreshToken = req.headers[HEADER.REFRESHTOKEN];
+      const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
+      if (userId !== decodeUser.userId)
+        throw new AuthFailureError("Invalid decodeUser");
+      console.log("check decode", decodeUser);
+      req.keyStore = keyStore;
+      req.user = decodeUser;
+      req.refreshToken = refreshToken;
+    } catch (error) {
+      throw error;
     }
-)}
+  }
+  //3
+  const accessToken = req.headers[HEADER.AUTHORIZATION];
+  if (!accessToken) throw new NotFoundError("accessToken not found request");
+
+  try {
+    const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
+    if (userId !== decodeUser.userId)
+      throw new AuthFailureError("Invalid decodeUser");
+    req.keyStore = keyStore;
+    return next();
+  } catch (error) {
+    throw error;
+  }
+});
 
 const verifyToken = (token, keySecret) => {
   const decodedToken = jwt.verify(token, keySecret);
@@ -62,4 +84,5 @@ const verifyToken = (token, keySecret) => {
 module.exports = {
   createTokenPair,
   verifyToken,
+  authentication,
 };

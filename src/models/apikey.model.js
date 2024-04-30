@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const DOCUMENT_NAME = "apikey";
 const COLLECTION_NAME = "apikeys";
 
-const apiKeySchema = mongoose.Schema(
+const apiKeySchema = new mongoose.Schema(
   {
     key: {
       type: String,
@@ -16,7 +16,7 @@ const apiKeySchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    permission: {
+    permissions: {
       type: [String],
       required: true,
       enum: ["0000", "1111", "2222"],

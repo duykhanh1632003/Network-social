@@ -1,23 +1,34 @@
-const { default: mongoose } = require("mongoose");
-const { findByIdAndUpdate } = require("../models/keytoken.model");
-const keyToken = require("./../models/keytoken.model");
+"use strict";
+
+const keyTokenModel = require("../models/keyToken.model");
+const mongoose = require("mongoose");
 class KeyTokenService {
   static createKeyToken = async ({
     userId,
-    publickey,
+    publicKey,
     privateKey,
     refreshToken,
   }) => {
     try {
+      // const tokens = await keyTokenModel.create({
+      //   user: userId,
+      //   publicKey,
+      //   privateKey,
+      // });
+      // return tokens ? publicKeyString : null;
       const filter = { user: userId },
         update = {
-          publickey,
+          publicKey,
           privateKey,
           refreshTokenUsed: [],
           refreshToken,
         },
         options = { upsert: true, new: true };
-      const tokens = await keyToken.findByIdAndUpdate(filter, update, options);
+      const tokens = await keyTokenModel.findOneAndUpdate(
+        filter,
+        update,
+        options
+      );
       return tokens ? tokens.publicKey : null;
     } catch (e) {
       return e;
@@ -25,25 +36,26 @@ class KeyTokenService {
   };
 
   static findByUserId = async (userId) => {
-    return await keyToken
-      .findOne({ user: mongoose.Types.ObjectId(userId) })
+    return await keyTokenModel
+      .findOne({ user: new mongoose.Types.ObjectId(userId) })
       .lean();
   };
 
   static removeKeyById = async (id) => {
-    return await keyToken.deleteOne(id);
+    return await keyTokenModel.deleteOne(id);
   };
 
   static foundByRefreshTokenUsed = async (refreshToken) => {
-    return await keyToken.findOne({
+    return await keyTokenModel.findOne({
       refreshTokenUsed: refreshToken,
     });
   };
   static deleteKeyById = async (userId) => {
-    return await keyToken.deleteOne({ user: userId });
+    return await keyTokenModel.deleteOne({ user: userId });
   };
+
   static findByRefreshToken = async (refreshToken) => {
-    return await keyToken.findOne({ refreshToken }).lean();
+    return await keyTokenModel.findOne({ refreshToken}).lean();
   };
 }
 

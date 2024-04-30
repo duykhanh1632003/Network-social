@@ -1,17 +1,10 @@
 "use strict";
-const { v4: uuidv4 } = require("uuid");
 
-const apiKey = require("../models/apikey.model");
-const crypto = require("crypto");
+const { apiKey } = require("../models/apikey.model");
 
 const findById = async (key) => {
   try {
-    console.log("getkey");
-    const newKey = await apiKey.create({
-      key: crypto.randomBytes(64).toString("hex"),
-      status: true,
-      permission: "0000",
-    });
+    const newKey = await apiKey.findOne({ key ,status: true}).lean();
     return newKey;
   } catch (error) {
     console.error("Error creating API key:", error);

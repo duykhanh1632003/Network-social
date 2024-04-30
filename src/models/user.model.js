@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const DOCUMENT_NAME = "user";
 const COLLECTION_NAME = "users";
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },

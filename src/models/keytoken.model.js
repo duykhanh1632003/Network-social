@@ -1,14 +1,14 @@
 "use strict";
 const mongoose = require("mongoose"); // Erase if already required
-const DOCUMENT_NAME = "keyToken";
-const COLLECTION_NAME = "keyTokens";
+const DOCUMENT_NAME = "key";
+const COLLECTION_NAME = "keys";
 
 const keyTokenSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "user",
+      ref: "shop",
     },
     publicKey: {
       type: String,
@@ -34,4 +34,4 @@ const keyTokenSchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = { keyToken: mongoose.model(DOCUMENT_NAME, keyTokenSchema) };
+module.exports = mongoose.model(DOCUMENT_NAME, keyTokenSchema);

@@ -2,13 +2,15 @@ const { verifyToken, createTokenPair } = require("../auth/authUtils");
 const {
   RefreshTokenError,
   BadRequestError,
+  AuthFailError,
 } = require("../core/error.response");
 const bcrypt = require("bcrypt");
-const { keyToken } = require("../models/keytoken.model");
+const { keyToken } = require("../models/keyToken.model");
 const { user } = require("../models/user.model");
-const KeyTokenService = require("./keytoken.service");
 const { findByEmail } = require("./user.service");
 const crypto = require("crypto");
+const { getInfoData } = require("../utils");
+const KeyTokenService = require("./keyToken.service");
 
 class AccessService {
   static handlerRefreshToken = async (refreshToken) => {
@@ -53,7 +55,7 @@ class AccessService {
     return { user: { userId, email }, tokens };
   };
 
-  static signup = async ({
+  static signUp = async ({
     firstName,
     lastName,
     email,
@@ -75,24 +77,49 @@ class AccessService {
         phoneNumber,
         gender,
       });
-      if (newUser) {
-        const privateKey = crypto.randomBytes(64).toString("hex");
-        const publicKey = crypto.randomBytes(64).toString("hex");
-        const keyStore = await KeyTokenService.createKeyToken({
-          userId: newUser._id,
-          publicKey,
-          privateKey,
-        });
-        if (!keyStore) {
-          throw new BadRequestError("Cannot create keystore in signup");
-        }
-        const tokens = await createTokenPair(
-          { userId: newUser._id, email },
-          publicKey,
-          privateKey
-        );
-        return { user: { userId: newUser._id, email }, tokens };
-      }
-    } catch (e) {}
+
+      return newUser;
+    } catch (e) {
+      throw new AuthFailError("Cannot create account");
+    }
+  };
+  static logout = async (keystore) => {
+    const deleteKey = await KeyTokenService.removeKeyById(keystore._id);
+    return deleteKey;
+  };
+  static login = async ({ email, password, refreshToken = null }) => {
+    const foundUser = await findByEmail({ email });
+    if (!foundUser) {
+      throw BadRequestError("Shop not registered");
+    }
+    console.log("check found", foundUser);
+    const match = await bcrypt.compare(password, foundUser.password);
+    if (!match) {
+      throw new AuthFailError("Password Incorrect");
+    }
+
+    const privateKey = crypto.randomBytes(64).toString("hex");
+    const publicKey = crypto.randomBytes(64).toString("hex");
+
+    const tokens = await createTokenPair(
+      { userId: foundUser._id, email },
+      publicKey,
+      privateKey
+    );
+    await KeyTokenService.createKeyToken({
+      refreshToken: tokens.refreshToken,
+      privateKey,
+      publicKey,
+      userId: foundUser._id,
+    });
+    return {
+      user: getInfoData({
+        fields: ["_id", "name", "email"],
+        object: foundUser,
+      }),
+      tokens,
+    };
   };
 }
+
+module.exports = AccessService;

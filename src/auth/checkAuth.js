@@ -1,6 +1,5 @@
 "use strict";
-
-const { findById } = require("../services/apiKey.service");
+const { findById } = require("../services/apikey.service");
 
 const HEADER = {
   API_KEY: "x-api-key",
@@ -9,17 +8,19 @@ const HEADER = {
 
 const apiKey = async (req, res, next) => {
   try {
-    const key = req.headers[HEADER.API_KEY].toString();
+    const key = req.headers[HEADER.API_KEY]?.toString();
     if (!key) {
       return res.status(403).json({
-        message: "Key error forbidden",
+        message: "Key Forbidden error",
       });
     }
-    const objectKey = await findById(key);
-    if (!objectKey)
-      res.status(403).json({
-        message: "object key forbidden error",
+    const objKey = await findById(key);
+    if (!objKey) {
+      return res.status(403).json({
+        message: "objKey Forbidden error",
       });
+    }
+    req.objKey = objKey;
     return next();
   } catch (e) {
     return res.status(500).json({
@@ -27,14 +28,18 @@ const apiKey = async (req, res, next) => {
     });
   }
 };
+
 const permission = (permissionCode) => {
   return (req, res, next) => {
+    console.log("check object key", req.objKey.permissions);
+
     if (!req.objKey || !req.objKey.permissions) {
       // Kiểm tra req.objKey tồn tại và có thuộc tính permissions
       return res.status(403).json({
         message: " objKey Permission denied",
       });
     }
+
     const validPermission = req.objKey.permissions.includes(permissionCode); // Sửa includes thành includes
     if (!validPermission) {
       return res.status(403).json({
