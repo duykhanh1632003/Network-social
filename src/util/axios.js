@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosHaveAuth = axios.create({
-  baseURL: "http://localhost:8000/v1/",
+  baseURL: "http://localhost:8000/v1",
   headers: {
     "Content-Type": "application/json",
     "x-api-key":
@@ -9,7 +9,7 @@ export const axiosHaveAuth = axios.create({
   },
 });
 export const axiosNotHaveAuth = axios.create({
-  baseURL: "http://localhost:8000/v1/",
+  baseURL: "http://localhost:8000/v1",
   headers: {
     "Content-Type": "application/json",
     "x-api-key":

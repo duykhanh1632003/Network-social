@@ -2,6 +2,7 @@ import { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "./SignIn.css";
+import { Link } from "react-router-dom";
 const SignIn = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
@@ -49,10 +50,13 @@ const SignIn = () => {
         <div className="w-[364px] h-[52px] bg-[#0866FF] hover:bg-[#4889f1] rounded-lg cursor-pointer flex justify-center items-center text-[#FFFFFF] text-xl font-medium">
           Đăng nhập
         </div>
-        <div className="mt-[18px] text-sm text-[#0899FF] cursor-pointer relative">
+        <div className="mt-[18px] text-sm text-[#0899FF] cursor-pointer relative ">
           <span className="group">Quên mật khẩu?</span>
         </div>
-        <div></div>
+        <div className="underline"> </div>
+        <Link to={"/signup"} className="register">
+          Tạo tài khoản mới
+        </Link>
       </div>
     </div>
   );

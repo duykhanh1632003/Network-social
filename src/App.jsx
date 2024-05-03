@@ -7,6 +7,7 @@ import RootLayout from "./components/RootLayout";
 import MiddleSideBar from "./pages/HomePage/Home-middle/MiddleSideBar";
 import Friend from "./pages/Friends/Friend";
 
+
 function App() {
   return (
     <main>
