@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { postRegisterUser } from "../../../util/axios";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
@@ -10,15 +9,15 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
-  async function registerUser(e) {
-    e.preventDefault();
-    toast.success("hello");
-    console.log("check", email, name, password);
-    const response = await postRegisterUser({ name, email, password });
-    if (response) {
-      navigate("/");
+    async function registerUser(e) {
+      e.preventDefault();
+      toast.success("hello");
+      console.log("check", email, name, password);
+      const response = 5
+      if (response) {
+        navigate("/");
+      }
     }
-  }
 
   return (
     <div className="mt-4 grow flex items-center justify-around">

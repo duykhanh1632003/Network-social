@@ -10,7 +10,7 @@ import ImageUpload from "../../../components/ImageUpload";
 
 const LeftSideBar = () => {
   return (
-    <div className="w-[348px] custom-scrollbar pt-[14px] bg-[#F0F2F5] mr-0 overflow-auto flex flex-col h-screen">
+    <div className="w-[348px] custom-scrollbar pt-[14px] bg-[#F0F2F5] mr-[112px] overflow-auto flex flex-col h-screen">
       <div className="flex h-[48px]  items-center hover:bg-gray-200 hover:rounded-tl-lg hover:rounded-bl-lg cursor-pointer">
         <div className="w-[36px] h-[36px] rounded-full bg-slate-800 flex items-center justify-center ml-[16px] mr-[12px]">
           <img

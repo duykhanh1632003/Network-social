@@ -2,21 +2,23 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import SignUp from "./pages/Auth/SignUp/SignUp";
 import SignIn from "./pages/Auth/SignIn/SignIn";
-import Header from "./pages/HomePage/Header";
-import { ClickContextProvider } from "./context/ClickContext";
-import HomePage from "./pages/HomePage/HomePage";
 import "bootstrap/dist/css/bootstrap.min.css";
+import RootLayout from "./components/RootLayout";
+import MiddleSideBar from "./pages/HomePage/Home-middle/MiddleSideBar";
+import Friend from "./pages/Friends/Friend";
 
 function App() {
   return (
-    <ClickContextProvider>
-      <Header />
+    <main>
       <Routes>
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route index element={<HomePage />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route element={<RootLayout />}>
+          <Route index element={<MiddleSideBar />} />
+          <Route path={"/friends"} element={<Friend />} />
+        </Route>
       </Routes>
-    </ClickContextProvider>
+    </main>
   );
 }
 
