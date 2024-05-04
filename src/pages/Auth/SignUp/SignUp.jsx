@@ -16,7 +16,7 @@ const SignUp = () => {
   const handleGenderClick = (gender) => {
     setGender(gender);
   };
-  const { loading, signup } = useSignup();
+  const { signup } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

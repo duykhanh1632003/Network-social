@@ -1,12 +1,10 @@
 import { toast } from "react-toastify";
-import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
 import { axiosNotHaveAuth } from "./../util/axios";
 import { useNavigate } from "react-router-dom";
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
   const navigate = useNavigate();
   const signup = async ({
     firstName,

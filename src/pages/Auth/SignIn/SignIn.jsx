@@ -3,13 +3,20 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "./SignIn.css";
 import { Link } from "react-router-dom";
+import useLogin from "../../../hooks/useLogin";
 const SignIn = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const { login } = useLogin();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const handleSubmitLogin = async (e) => {
+    console.log("check", email, password);
+    e.preventDefault();
+    await login({ email, password });
   };
 
   const handlePasswordChange = (e) => {
@@ -29,7 +36,7 @@ const SignIn = () => {
           <textarea
             className="w-full bg-transparent outline-none resize-none text-sm input-textarea"
             placeholder="Email hoặc số điện thoại"
-            onChange={(e) => setEmail(e.target.email)}
+            onChange={(e) => setEmail(e.target.value)}
           ></textarea>
         </div>
         <div className="relative border border-gray-300 rounded-lg focus-within:border-blue-500 w-[364px] h-[52px] bg-[##FFFFFF] mb-[16px]">
@@ -47,7 +54,10 @@ const SignIn = () => {
             {passwordVisible ? <RemoveRedEyeIcon /> : <VisibilityOffIcon />}
           </button>
         </div>{" "}
-        <div className="w-[364px] h-[52px] bg-[#0866FF] hover:bg-[#4889f1] rounded-lg cursor-pointer flex justify-center items-center text-[#FFFFFF] text-xl font-medium">
+        <div
+          onClick={(e) => handleSubmitLogin(e)}
+          className="w-[364px] h-[52px] bg-[#0866FF] hover:bg-[#4889f1] rounded-lg cursor-pointer flex justify-center items-center text-[#FFFFFF] text-xl font-medium"
+        >
           Đăng nhập
         </div>
         <div className="mt-[18px] text-sm text-[#0899FF] cursor-pointer relative ">
