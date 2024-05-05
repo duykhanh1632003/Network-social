@@ -7,9 +7,13 @@ import RootLayout from "./components/RootLayout";
 import MiddleSideBar from "./pages/HomePage/Home-middle/MiddleSideBar";
 import Friend from "./pages/Friends/Friend";
 import { useAuthContext } from "./context/AuthContext";
+import { useEffect } from "react";
 
 function App() {
   const { authUser } = useAuthContext();
+  useEffect(() => {
+    console.log("check auth", authUser);
+  }, []);
   return (
     <main>
       <Routes>
