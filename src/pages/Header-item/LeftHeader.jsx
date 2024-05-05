@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { WiDirectionLeft } from "react-icons/wi";
 import { BsX } from "react-icons/bs";
-import useComponentVisible from "../../context/useComponentVisible.jsx";
+import useComponentVisible from "../../hooks/useComponentVisible.jsx";
 const LeftHeader = () => {
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false);
+    const { ref, isComponentVisible, setIsComponentVisible } =
+      useComponentVisible(false);
 
-  const changeButton = () => {
-    setIsComponentVisible(!isComponentVisible);
-  };
+    const changeButton = () => {
+      setIsComponentVisible(!isComponentVisible);
+    };
 
   return (
     <div className="h-full leftheader">
