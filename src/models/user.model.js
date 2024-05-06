@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, enum: ["male", "female", "other"], required: true }, // Giới tính
     dateOfBirth: { type: Date }, // Ngày sinh
     avatar: { type: String }, // Đường dẫn đến hình ảnh đại diện
+    savePosts: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+      default: [],
+    },
   },
   { timestamps: true }
 );
