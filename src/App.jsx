@@ -8,6 +8,7 @@ import MiddleSideBar from "./pages/HomePage/Home-middle/MiddleSideBar";
 import Friend from "./pages/Friends/Friend";
 import { useAuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
+import DetailPost from "./pages/HomePage/Home-middle/Post/detail/DetailPost";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -32,6 +33,10 @@ function App() {
           <Route index element={<MiddleSideBar />} />
           <Route path="/friends" element={<Friend />} />
         </Route>
+        <Route
+          path="/photo/:id"
+          element={authUser ? <DetailPost /> : <Navigate to="/login" />}
+        />
       </Routes>
     </main>
   );

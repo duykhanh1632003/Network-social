@@ -9,7 +9,7 @@ const RootLayout = () => {
       <div className="z-4">
         <Header />
       </div>
-      <div className="flex h-screen dark:bg-black bg-[rgb(240,242,245)] w-full pt-4 z-1">
+      <div className="flex h-screen dark:bg-black bg-[rgb(240,242,245)] w-full  z-1">
         <LeftSideBar />
         <section className="flex h-full ">
           <Outlet />

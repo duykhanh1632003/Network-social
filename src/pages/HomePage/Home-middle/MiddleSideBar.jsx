@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import SlickCarousel from "./SlickCarousel";
 import Status from "./Post/Status";
 import "./MiddleSideBar.css"; // Import file for custom styles
-import Test from "../Test";
+import Posted from "./Post/Posted";
 
 const MiddleSideBar = () => {
   const middleRef = useRef();
@@ -25,16 +25,14 @@ const MiddleSideBar = () => {
 
   return (
     <div
-      className="w-[587px] bg-red-500 sticky h-screen overflow-y-auto max-h-screen middlesidebar"
+      className="w-[587px] sticky h-screen overflow-y-auto max-h-screen middlesidebar pt-4"
       ref={middleRef}
     >
       <SlickCarousel />
       <Status />
-      <Test />
-      <Test />
-      <Test />
-      <Test />
-      <Test />
+      <Posted />
+      <Posted />
+      <div className="h-[100px] w-full mt-5 items-center flex justify-center"></div>
     </div>
   );
 };

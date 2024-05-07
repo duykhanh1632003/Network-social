@@ -5,7 +5,7 @@ const Posts = () => {
   const [modalShow, setModalShow] = useState(false);
 
   return (
-    <div className="h-[67px] w-full bg-[#FFFFFF] flex items-center justify-start ">
+    <div className="h-[67px] w-full bg-[#FFFFFF] flex items-center justify-start rounded-lg">
       <div className="w-[40px] h-[40px] rounded-full ml-[13px] mt-[10px]">
         <img
           className="rounded-full w-[40px] h-[40px]"

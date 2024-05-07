@@ -6,13 +6,17 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
 html,
-:root{
+:root {
   height: 100%;
   font-family: 'Roboto', sans-serif;
-
 }
+
 
 .leftheader{
   z-index: 3;

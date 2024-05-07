@@ -50,6 +50,11 @@ const CreatePost = (props) => {
     setIsOpenImage(false);
     setImg(null);
   };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {  
+      setInputValue(inputValue + "\n");
+    }
+  };
 
   const handleOnChangePostPhoto = () => {
     setIsOpenAddImage(true);
@@ -111,6 +116,7 @@ const CreatePost = (props) => {
             <textarea
               value={inputValue}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               placeholder="Nguyễn ơi bạn đang nghĩ gì thế?"
               className="w-full bg-transparent outline-none resize-none text-sm input-textarea"
               cols="30"
