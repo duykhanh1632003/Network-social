@@ -16,7 +16,7 @@ export const sidebarLinks = [
     label: "Marketplace",
   },
   {
-    icon: <RiGroupLine className="rounded-full bg-yellow-300" />,
+  icon: <RiGroupLine className="rounded-full bg-yellow-300" />,
     route: "/group",
     label: "Nhóm",
   },

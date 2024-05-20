@@ -1,4 +1,3 @@
-import { CommentList } from "../Comment/CommentList";
 import { MdCancel, MdPublic } from "react-icons/md";
 import RightHeader from "./../../../../Header-item/RightHeader";
 import { BsThreeDots } from "react-icons/bs";
@@ -6,8 +5,139 @@ import { FaComment } from "react-icons/fa";
 import { FaShare } from "react-icons/fa6";
 import CommentLikeShareDetail from "./CommentLikeShareDetail";
 import { FaCaretDown } from "react-icons/fa";
+import CommentList from "../../../../Comments/CommentList";
+import "./DetailPost.css";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePostContext } from "../../../../../context/PostContext";
+import { CiFaceSmile } from "react-icons/ci";
+import SendIcon from "@mui/icons-material/Send";
+import Send from "@mui/icons-material/Send";
+import LikeIcon from "../../../../../img/likeIcon";
+import EmojiPicker from "@emoji-mart/react";
+const commentsData = [
+  {
+    id: "609e14cb2f02c459cc4e1b1g",
+    message: "This is the first comment",
+    postId: "609e14cb2f02c459cc4e1b1a",
+    userId: "609e14cb2f02c459cc4e1b1b",
+    parentId: null,
+    childrenId: ["609e14cb2f02c459cc4e1b1c", "609e14cb2f02c459cc4e1b1d"],
+    user: {
+      firstName: "John",
+      lastName: "Doe",
+      avatar: "path/to/avatar1.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1h",
+    message: "Another comment here",
+    postId: "609e14cb2f02c459cc4e1b1a",
+    userId: "609e14cb2f02c459cc4e1b1c",
+    parentId: "609e14cb2f02c459cc4e1b1g",
+    childrenId: ["609e14cb2f02c459cc4e1b1b"],
+    user: {
+      firstName: "Jane",
+      lastName: "Smith",
+      avatar: "path/to/avatar2.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1a",
+    message: "Comment of user",
+    postId: "609e14cb2f02c459cc4e1b1a",
+    userId: "609e14cb2f02c459cc4e1b1b",
+    parentId: "609e14cb2f02c459cc4e1b1h",
+    childrenId: [],
+    user: {
+      firstName: "Jane",
+      lastName: "Smith",
+      avatar: "path/to/avatar3.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1i",
+    message: "Reply to the second comment",
+    postId: "609e14cb2f02c459cc4e1b1a",
+    userId: "609e14cb2f02c459cc4e1b1d",
+    parentId: "609e14cb2f02c459cc4e1b1g",
+    childrenId: [],
+    user: {
+      firstName: "Alice",
+      lastName: "Johnson",
+      avatar: "path/to/avatar3.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1j",
+    message: "Yet another comment",
+    postId: "609e14cb2f02c459cc4e1b1a",
+    userId: "609e14cb2f02c459cc4e1b1f",
+    parentId: null,
+    childrenId: [],
+    user: {
+      firstName: "Bob",
+      lastName: "Brown",
+      avatar: "path/to/avatar4.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1k",
+    message: "A new top-level comment",
+    postId: "609e14cb2f02c459cc4e1b1b",
+    userId: "609e14cb2f02c459cc4e1b1e",
+    parentId: null,
+    childrenId: ["609e14cb2f02c459cc4e1b1g"],
+    user: {
+      firstName: "Charlie",
+      lastName: "Davis",
+      avatar: "path/to/avatar5.jpg",
+    },
+  },
+  {
+    id: "609e14cb2f02c459cc4e1b1l",
+    message: "Reply to the new comment",
+    postId: "609e14cb2f02c459cc4e1b1b",
+    userId: "609e14cb2f02c459cc4e1b1g",
+    parentId: "609e14cb2f02c459cc4e1b1k",
+    childrenId: [],
+    user: {
+      firstName: "Eve",
+      lastName: "Evans",
+      avatar: "path/to/avatar6.jpg",
+    },
+  },
+];
 
 const DetailPost = () => {
+  const { post, rootComments } = usePostContext();
+  const [commentsInput, setCommentsInput] = useState(null);
+  const [textareaHeight, setTextareaHeight] = useState(25);
+  const commentListContainerRef = useRef(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const textareaRef = useRef(null);
+
+  const handleTextareaChange = (e) => {
+    setCommentsInput(e.target.value);
+  };
+
+  const handleEmojiClick = (event, emojiObject) => {
+    const cursorPosition = textareaRef.current.selectionStart;
+    const textBeforeCursor = commentsInput.substring(0, cursorPosition);
+    const textAfterCursor = commentsInput.substring(cursorPosition);
+
+    const newText = textBeforeCursor + emojiObject.emoji + textAfterCursor;
+    setCommentsInput(newText);
+
+    // Reposition the cursor
+    setTimeout(() => {
+      textareaRef.current.selectionStart =
+        cursorPosition + emojiObject.emoji.length;
+      textareaRef.current.selectionEnd =
+        cursorPosition + emojiObject.emoji.length;
+      textareaRef.current.focus();
+    }, 0);
+  };
+
   return (
     <div className="flex">
       <div>
@@ -19,9 +149,10 @@ const DetailPost = () => {
             <img src="/src/assets/Facebook_Logo_(2019).png" alt="logo" />
           </div>
         </div>
-        <div className="w-[1174px] bg-[#ced9e3] h-screen flex items-center justify-center object-contain">
+        <div className="w-[1174px] bg-[#ced9e3] h-[729px] flex items-center justify-center object-contain">
           <img
-            src="https://scontent.fhan14-1.fna.fbcdn.net/v/t39.30808-6/440943941_963738398761571_3538973445392645895_n.jpg?_nc_cat=105&_nc_cb=99be929b-713f6db7&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGXkV-3SEK_IZSyeHRryPMzEhCRheD1l4sSEJGF4PWXixNNa_aMjJbYN9Wk4XAoRsl1m2E5RsuoScWquIyRDZzf&_nc_ohc=RlpYZ8wNZYcQ7kNvgGifZ9i&_nc_ht=scontent.fhan14-1.fna&oh=00_AfDo3KsvKpt3HRkCc1WVhE77KA4ADmY2c-8N0LCFeMQxaQ&oe=6640CBE1"
+            className="h-[729px]"
+            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/03/review-va-giai-thich-phim-ao-anh-mirage-y-nghia-cua-nhung-nhanh-thoi-gian_623806dc0fdbe.jpeg"
             alt="img"
           />
         </div>
@@ -33,13 +164,13 @@ const DetailPost = () => {
         <div className="w-[362px] pt-[6px] pb-3">
           <div className=" w-[362px] border-b border-gray-400 "></div>
         </div>
-        <div className="pl-[16px] pr-[16px]">
+        <div className="pl-[16px] pr-[16px] comment-list-container ">
           <div className="flex justify-between">
             <div className="flex ">
               <div className="w-[41px] h-[41px] rounded-full ">
                 <img
                   className="w-[41px] h-[41px] rounded-full"
-                  src="https://scontent.fhan14-2.fna.fbcdn.net/v/t39.30808-6/440954600_850753547097225_8495206908229316571_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFYDRvc535_kgXd_4I8oy2IAgrImf6WfP4CCsiZ_pZ8_u7rA0WFRYpORCqhD8K7-WxPTgiYiFXJgsUHNYFjQFKY&_nc_ohc=Kz--oS43tzUQ7kNvgHUUWZ7&_nc_ht=scontent.fhan14-2.fna&oh=00_AfDom9vKoSBmYjX08ECU_hWr874ZbSuCOk-BkxK-WJ11OQ&oe=663FE6A7"
+                  src="/src/assets/406860438_1048481983054231_6833658113738926574_n.jpg"
                   alt="avt"
                 />
               </div>
@@ -64,15 +195,9 @@ const DetailPost = () => {
           <div className="text-sm">
             Đại ca rồng tính xa thật 🤣🤣 đã thu nạp thằng e mới giải ngũ rồi
           </div>
-
           <div className="flex justify-between mt-[36px]">
             <div className="flex">
-              <div className="w-[19px] h-[19px] rounded-full mr-1 mt-[1px]">
-                <img
-                  src="data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.5'/%3E%3Cpath d='M7.3014 3.8662a.6974.6974 0 0 1 .6974-.6977c.6742 0 1.2207.5465 1.2207 1.2206v1.7464a.101.101 0 0 0 .101.101h1.7953c.992 0 1.7232.9273 1.4917 1.892l-.4572 1.9047a2.301 2.301 0 0 1-2.2374 1.764H6.9185a.5752.5752 0 0 1-.5752-.5752V7.7384c0-.4168.097-.8278.2834-1.2005l.2856-.5712a3.6878 3.6878 0 0 0 .3893-1.6509l-.0002-.4496ZM4.367 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.3989' y1='2.3999' x2='13.5983' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%2302ADFC'/%3E%3Cstop offset='.5' stop-color='%230866FF'/%3E%3Cstop offset='1' stop-color='%232B7EFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E"
-                  alt="like"
-                />
-              </div>
+              <LikeIcon />
               <div className="text-[#606770] text-[14px]">7.7K</div>
             </div>
             <div className="flex text-[#606770]">
@@ -103,11 +228,48 @@ const DetailPost = () => {
               <FaCaretDown />
             </div>
           </div>
-          {/* <CommentList /> */}
+          <div className="w-[331px] pt-[6px] pb-3 ">
+            <CommentList comments={rootComments} />
+          </div>{" "}
         </div>
-        <div>
-          <div>avt</div>
-          <div>cmt</div>
+        <div className="flex pl-[14px] pr-[11px] h-[76px]  pt-[8px]">
+          <div className="w-[33px] h-[33px] rounded-full ">
+            <img
+              className="w-[33px] h-[33px] rounded-full"
+              src="/src/assets/328619176_717087896492083_6413426032507387658_n.jpg"
+              alt="avt"
+            />
+          </div>
+          <div className="ml-2 w-[289px] pr-[17px] bg-[#F0F2F5] rounded-2xl">
+            <textarea
+              onChange={handleTextareaChange}
+              className="w-full resize-none bg-transparent outline-none pt-2 pl-1 text-sm"
+              placeholder="Viết bình luận..."
+              ref={textareaRef}
+            />
+            <div className="h-[37px] flex w-[289px] p-2 justify-between absolute mt-[-40px]">
+              <div className="text-lg">
+                {showEmojiPicker && (
+                  <div className="absolute z-10 mt-[-440px]">
+                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                  </div>
+                )}
+                <CiFaceSmile
+                  className="text-[#7B8289] font-medium mt-1 cursor-pointer"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                />
+              </div>
+              <div className="text-lg">
+                <div className="text-lg">
+                  {commentsInput ? (
+                    <Send style={{ color: "#1167C9" }} fontSize="small" />
+                  ) : (
+                    <Send style={{ color: "#C2C6CC" }} fontSize="small" />
+                  )}
+                </div>{" "}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

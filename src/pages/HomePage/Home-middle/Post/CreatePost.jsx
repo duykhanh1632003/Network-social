@@ -51,7 +51,7 @@ const CreatePost = (props) => {
     setImg(null);
   };
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {  
+    if (e.key === "Enter") {
       setInputValue(inputValue + "\n");
     }
   };

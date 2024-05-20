@@ -1,0 +1,20 @@
+.comment {
+    margin-bottom: 20px; /* Add margin at the bottom of each comment */
+    border: 1px solid #ccc; /* Add a border around each comment */
+    padding: 10px; /* Add padding for the comment content */
+  }
+  
+  .comment-message {
+    font-weight: bold; /* Style the message text */
+  }
+  
+  .comment-user {
+    color: #666; /* Style the user text */
+  }
+  
+  .comment-avatar {
+    width: 50px; /* Adjust avatar size */
+    height: 50px;
+    border-radius: 50%; /* Make the avatar round */
+  }
+  
