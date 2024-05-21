@@ -9,10 +9,10 @@ const commentSchema = new mongoose.Schema(
   {
     comment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "comment",
       required: true,
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   },
   {
     timestamps: true,

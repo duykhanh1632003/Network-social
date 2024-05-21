@@ -5,12 +5,21 @@ const { post } = require("../models/post.model");
 const { user } = require("../models/user.model");
 
 class PostService {
-  static createPost = async ({ content, image, permission }, userId) => {
+  static createPost = async ({
+    content,
+    image,
+    author,
+    likedPost,
+    comments,
+    share,
+  }) => {
     const newPost = await post.create({
       content,
       image,
-      permission,
-      author: userId,
+      author,
+      likedPost,
+      comments,
+      share,
     });
     if (!newPost) {
       throw new BadRequestError("Cannot create post");
