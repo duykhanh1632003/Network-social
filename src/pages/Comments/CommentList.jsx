@@ -1,10 +1,12 @@
+import React from "react";
 import Comment from "./Comment";
+import "./CommentList.css"; // Import CSS for styling
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ comments, level = 0 }) => {
   return (
-    <div className="space-y-4">
+    <div className="comment-list">
       {comments.map((comment) => (
-        <Comment key={comment.id} {...comment} />
+        <Comment key={comment.id} {...comment} level={level} />
       ))}
     </div>
   );

@@ -7,112 +7,17 @@ import CommentLikeShareDetail from "./CommentLikeShareDetail";
 import { FaCaretDown } from "react-icons/fa";
 import CommentList from "../../../../Comments/CommentList";
 import "./DetailPost.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { usePostContext } from "../../../../../context/PostContext";
 import { CiFaceSmile } from "react-icons/ci";
-import SendIcon from "@mui/icons-material/Send";
 import Send from "@mui/icons-material/Send";
 import LikeIcon from "../../../../../img/likeIcon";
-import EmojiPicker from "@emoji-mart/react";
-const commentsData = [
-  {
-    id: "609e14cb2f02c459cc4e1b1g",
-    message: "This is the first comment",
-    postId: "609e14cb2f02c459cc4e1b1a",
-    userId: "609e14cb2f02c459cc4e1b1b",
-    parentId: null,
-    childrenId: ["609e14cb2f02c459cc4e1b1c", "609e14cb2f02c459cc4e1b1d"],
-    user: {
-      firstName: "John",
-      lastName: "Doe",
-      avatar: "path/to/avatar1.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1h",
-    message: "Another comment here",
-    postId: "609e14cb2f02c459cc4e1b1a",
-    userId: "609e14cb2f02c459cc4e1b1c",
-    parentId: "609e14cb2f02c459cc4e1b1g",
-    childrenId: ["609e14cb2f02c459cc4e1b1b"],
-    user: {
-      firstName: "Jane",
-      lastName: "Smith",
-      avatar: "path/to/avatar2.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1a",
-    message: "Comment of user",
-    postId: "609e14cb2f02c459cc4e1b1a",
-    userId: "609e14cb2f02c459cc4e1b1b",
-    parentId: "609e14cb2f02c459cc4e1b1h",
-    childrenId: [],
-    user: {
-      firstName: "Jane",
-      lastName: "Smith",
-      avatar: "path/to/avatar3.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1i",
-    message: "Reply to the second comment",
-    postId: "609e14cb2f02c459cc4e1b1a",
-    userId: "609e14cb2f02c459cc4e1b1d",
-    parentId: "609e14cb2f02c459cc4e1b1g",
-    childrenId: [],
-    user: {
-      firstName: "Alice",
-      lastName: "Johnson",
-      avatar: "path/to/avatar3.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1j",
-    message: "Yet another comment",
-    postId: "609e14cb2f02c459cc4e1b1a",
-    userId: "609e14cb2f02c459cc4e1b1f",
-    parentId: null,
-    childrenId: [],
-    user: {
-      firstName: "Bob",
-      lastName: "Brown",
-      avatar: "path/to/avatar4.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1k",
-    message: "A new top-level comment",
-    postId: "609e14cb2f02c459cc4e1b1b",
-    userId: "609e14cb2f02c459cc4e1b1e",
-    parentId: null,
-    childrenId: ["609e14cb2f02c459cc4e1b1g"],
-    user: {
-      firstName: "Charlie",
-      lastName: "Davis",
-      avatar: "path/to/avatar5.jpg",
-    },
-  },
-  {
-    id: "609e14cb2f02c459cc4e1b1l",
-    message: "Reply to the new comment",
-    postId: "609e14cb2f02c459cc4e1b1b",
-    userId: "609e14cb2f02c459cc4e1b1g",
-    parentId: "609e14cb2f02c459cc4e1b1k",
-    childrenId: [],
-    user: {
-      firstName: "Eve",
-      lastName: "Evans",
-      avatar: "path/to/avatar6.jpg",
-    },
-  },
-];
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 const DetailPost = () => {
-  const { post, rootComments } = usePostContext();
-  const [commentsInput, setCommentsInput] = useState(null);
-  const [textareaHeight, setTextareaHeight] = useState(25);
-  const commentListContainerRef = useRef(null);
+  const { rootComments } = usePostContext();
+  const [commentsInput, setCommentsInput] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef(null);
 
@@ -120,20 +25,18 @@ const DetailPost = () => {
     setCommentsInput(e.target.value);
   };
 
-  const handleEmojiClick = (event, emojiObject) => {
+  const handleEmojiSelect = (emoji) => {
     const cursorPosition = textareaRef.current.selectionStart;
     const textBeforeCursor = commentsInput.substring(0, cursorPosition);
     const textAfterCursor = commentsInput.substring(cursorPosition);
 
-    const newText = textBeforeCursor + emojiObject.emoji + textAfterCursor;
+    const newText = textBeforeCursor + emoji.native + textAfterCursor;
     setCommentsInput(newText);
 
     // Reposition the cursor
     setTimeout(() => {
-      textareaRef.current.selectionStart =
-        cursorPosition + emojiObject.emoji.length;
-      textareaRef.current.selectionEnd =
-        cursorPosition + emojiObject.emoji.length;
+      textareaRef.current.selectionStart = cursorPosition + emoji.native.length;
+      textareaRef.current.selectionEnd = cursorPosition + emoji.native.length;
       textareaRef.current.focus();
     }, 0);
   };
@@ -245,13 +148,14 @@ const DetailPost = () => {
               onChange={handleTextareaChange}
               className="w-full resize-none bg-transparent outline-none pt-2 pl-1 text-sm"
               placeholder="Viết bình luận..."
+              value={commentsInput}
               ref={textareaRef}
             />
             <div className="h-[37px] flex w-[289px] p-2 justify-between absolute mt-[-40px]">
               <div className="text-lg">
                 {showEmojiPicker && (
-                  <div className="absolute z-10 mt-[-440px]">
-                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                  <div className="absolute z-10 mt-[-460px] ml-[-70px]">
+                    <Picker data={data} onEmojiSelect={handleEmojiSelect} />
                   </div>
                 )}
                 <CiFaceSmile

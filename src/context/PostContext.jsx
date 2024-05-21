@@ -13,6 +13,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1b",
     parentId: null,
+    likes: 5,
     childrenId: ["609e14cb2f02c459cc4e1b1c", "609e14cb2f02c459cc4e1b1d"],
     user: {
       firstName: "John",
@@ -27,6 +28,7 @@ const commentsData = [
     userId: "609e14cb2f02c459cc4e1b1c",
     parentId: "609e14cb2f02c459cc4e1b1g",
     childrenId: ["609e14cb2f02c459cc4e1b1b"],
+    likes: 5,
     user: {
       firstName: "Jane",
       lastName: "Smith",
@@ -39,6 +41,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1b",
     parentId: "609e14cb2f02c459cc4e1b1h",
+    likes: 5,
     childrenId: [],
     user: {
       firstName: "Jane",
@@ -52,6 +55,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1d",
     parentId: "609e14cb2f02c459cc4e1b1g",
+    likes: 5,
     childrenId: [],
     user: {
       firstName: "Alice",
@@ -64,6 +68,7 @@ const commentsData = [
     message: "Yet another comment",
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1f",
+    likes: 5,
     parentId: null,
     childrenId: [],
     user: {
@@ -77,6 +82,7 @@ const commentsData = [
     message: "A new top-level comment",
     postId: "609e14cb2f02c459cc4e1b1b",
     userId: "609e14cb2f02c459cc4e1b1e",
+    likes: 5,
     parentId: null,
     childrenId: ["609e14cb2f02c459cc4e1b1g"],
     user: {
@@ -91,6 +97,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1b",
     userId: "609e14cb2f02c459cc4e1b1g",
     parentId: "609e14cb2f02c459cc4e1b1k",
+    likes: 5,
     childrenId: [],
     user: {
       firstName: "Eve",
