@@ -14,6 +14,7 @@ import Send from "@mui/icons-material/Send";
 import LikeIcon from "../../../../../img/likeIcon";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { Link } from "react-router-dom";
 
 const DetailPost = () => {
   const { rootComments } = usePostContext();
@@ -46,10 +47,15 @@ const DetailPost = () => {
       <div>
         <div className="absolute ">
           <div className="w-[40px] h-[40px] rounded-full flex mt-2 ml-4 ">
-            <div className="h-[35px] w-[35px] cursor-pointer rounded-full text-[35px] mr-1">
+            <Link
+              to={"/"}
+              className="h-[35px] w-[35px] cursor-pointer rounded-full text-[35px] mr-1"
+            >
               <MdCancel />
-            </div>
-            <img src="/src/assets/Facebook_Logo_(2019).png" alt="logo" />
+            </Link>
+            <Link to={"/"}>
+              <img src="/src/assets/Facebook_Logo_(2019).png" alt="logo" />
+            </Link>
           </div>
         </div>
         <div className="w-[1174px] bg-[#ced9e3] h-[729px] flex items-center justify-center object-contain">

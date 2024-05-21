@@ -8,6 +8,13 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { TiFolderAdd } from "react-icons/ti";
 import { MdOutlineCancel } from "react-icons/md";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { imageDb } from "./../../../../config/FireBaseUrl";
+import { v4 } from "uuid";
+import { toast } from "react-toastify";
+import { useAuthContext } from "../../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { axiosHaveAuth } from "../../../../util/axios";
 
 const CreatePost = (props) => {
   const [inputValue, setInputValue] = useState("");
@@ -18,6 +25,9 @@ const CreatePost = (props) => {
   const [isOpenAddImage, setIsOpenAddImage] = useState(false);
   const [isOpenImage, setIsOpenImage] = useState(false);
   const [isOpenCancel, setIsOpenCancel] = useState(false);
+  const { authUser } = useAuthContext();
+  const navigate = useNavigate();
+  const instance = axiosHaveAuth();
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -36,6 +46,7 @@ const CreatePost = (props) => {
   const handleOnChangeImage = (e) => {
     const file = e.target.files[0];
     setImg({
+      file: file,
       name: file.name,
       url: URL.createObjectURL(file),
     });
@@ -50,6 +61,7 @@ const CreatePost = (props) => {
     setIsOpenImage(false);
     setImg(null);
   };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       setInputValue(inputValue + "\n");
@@ -65,6 +77,7 @@ const CreatePost = (props) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     setImg({
+      file: file,
       name: file.name,
       url: URL.createObjectURL(file),
     });
@@ -75,6 +88,40 @@ const CreatePost = (props) => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
+  };
+
+  const handleNewPost = async () => {
+    try {
+      if (img !== null) {
+        const imgRef = ref(imageDb, `files/${v4()}`);
+        const snapshot = await uploadBytes(imgRef, img.file);
+        const url = await getDownloadURL(snapshot.ref);
+
+        // Construct the post body
+        const body = {
+          image: url.toString(),
+          content: inputValue,
+          author: authUser.user._id,
+          likes: [],
+          comments: [],
+          share: [],
+        };
+        console.log("Check body", body);
+        const response = await instance.post("/api/new/post", body);
+
+        // const response = await handleAddNewPost(body);
+
+        if (response) {
+          toast.success("Tạo bài viết thành công");
+          setImg(null);
+          setInputValue("");
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      toast.error("Tạo bài viết không thành công");
+      console.error("Error creating post:", error);
+    }
   };
 
   return (
@@ -188,6 +235,7 @@ const CreatePost = (props) => {
             </div>
           </div>
           <div
+            onClick={handleNewPost}
             className={
               inputValue !== "" || img !== null
                 ? "bottom-post-color"

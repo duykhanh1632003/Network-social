@@ -14,7 +14,6 @@ const commentsData = [
     userId: "609e14cb2f02c459cc4e1b1b",
     parentId: null,
     likes: 5,
-    childrenId: ["609e14cb2f02c459cc4e1b1c", "609e14cb2f02c459cc4e1b1d"],
     user: {
       firstName: "John",
       lastName: "Doe",
@@ -27,7 +26,6 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1c",
     parentId: "609e14cb2f02c459cc4e1b1g",
-    childrenId: ["609e14cb2f02c459cc4e1b1b"],
     likes: 5,
     user: {
       firstName: "Jane",
@@ -42,7 +40,6 @@ const commentsData = [
     userId: "609e14cb2f02c459cc4e1b1b",
     parentId: "609e14cb2f02c459cc4e1b1h",
     likes: 5,
-    childrenId: [],
     user: {
       firstName: "Jane",
       lastName: "Smith",
@@ -56,7 +53,6 @@ const commentsData = [
     userId: "609e14cb2f02c459cc4e1b1d",
     parentId: "609e14cb2f02c459cc4e1b1g",
     likes: 5,
-    childrenId: [],
     user: {
       firstName: "Alice",
       lastName: "Johnson",
@@ -69,8 +65,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1a",
     userId: "609e14cb2f02c459cc4e1b1f",
     likes: 5,
-    parentId: null,
-    childrenId: [],
+    parentId: "609e14cb2f02c459cc4e1b1i",
     user: {
       firstName: "Bob",
       lastName: "Brown",
@@ -83,8 +78,7 @@ const commentsData = [
     postId: "609e14cb2f02c459cc4e1b1b",
     userId: "609e14cb2f02c459cc4e1b1e",
     likes: 5,
-    parentId: null,
-    childrenId: ["609e14cb2f02c459cc4e1b1g"],
+    parentId: "609e14cb2f02c459cc4e1b1j",
     user: {
       firstName: "Charlie",
       lastName: "Davis",
@@ -98,7 +92,6 @@ const commentsData = [
     userId: "609e14cb2f02c459cc4e1b1g",
     parentId: "609e14cb2f02c459cc4e1b1k",
     likes: 5,
-    childrenId: [],
     user: {
       firstName: "Eve",
       lastName: "Evans",
