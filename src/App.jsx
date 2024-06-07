@@ -5,10 +5,11 @@ import SignIn from "./pages/Auth/SignIn/SignIn";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RootLayout from "./components/RootLayout";
 import MiddleSideBar from "./pages/HomePage/Home-middle/MiddleSideBar";
-import Friend from "./pages/Friends/Friend";
+import FriendContainer from "./pages/Friends/FriendContainer";
 import { useAuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
 import DetailPost from "./pages/HomePage/Home-middle/Post/detail/DetailPost";
+import FriendLayout from "./pages/Friends/FriendLayout";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -31,12 +32,17 @@ function App() {
         {/* Private routes */}
         <Route element={authUser ? <RootLayout /> : <Navigate to="/login" />}>
           <Route index element={<MiddleSideBar />} />
-          <Route path="/friends" element={<Friend />} />
         </Route>
         <Route
           path="/photo/:id"
           element={authUser ? <DetailPost /> : <Navigate to="/login" />}
         />
+        <Route element={authUser ? <FriendLayout /> : <Navigate to="/login" />}>
+          <Route
+            path="/friends"
+            element={authUser ? <FriendContainer /> : <Navigate to="/login" />}
+          />
+        </Route>
       </Routes>
     </main>
   );

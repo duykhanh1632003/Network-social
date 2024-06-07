@@ -7,12 +7,15 @@ import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PostContextProvider } from "./context/PostContext.jsx";
+import { ListPostContextProvider } from "./context/ListPostContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
         <PostContextProvider>
-          <App />
+          <ListPostContextProvider>
+            <App />
+          </ListPostContextProvider>
         </PostContextProvider>
         <ToastContainer />
       </AuthContextProvider>

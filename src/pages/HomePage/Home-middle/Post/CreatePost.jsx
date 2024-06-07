@@ -8,15 +8,9 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { TiFolderAdd } from "react-icons/ti";
 import { MdOutlineCancel } from "react-icons/md";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { imageDb } from "./../../../../config/FireBaseUrl";
-import { v4 } from "uuid";
-import { toast } from "react-toastify";
-import { useAuthContext } from "../../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { axiosHaveAuth } from "../../../../util/axios";
+import { useListPostContext } from "../../../../context/ListPostContext";
 
-const CreatePost = (props) => {
+const CreatePost = ({ show, onHide, setModalShow }) => {
   const [inputValue, setInputValue] = useState("");
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
   const [cursor, setCursor] = useState(null);
@@ -25,10 +19,7 @@ const CreatePost = (props) => {
   const [isOpenAddImage, setIsOpenAddImage] = useState(false);
   const [isOpenImage, setIsOpenImage] = useState(false);
   const [isOpenCancel, setIsOpenCancel] = useState(false);
-  const { authUser } = useAuthContext();
-  const navigate = useNavigate();
-  const instance = axiosHaveAuth();
-
+  const { createPost } = useListPostContext();
   const handleChange = (e) => {
     setInputValue(e.target.value);
     setCursor(e.target.selectionStart);
@@ -91,42 +82,13 @@ const CreatePost = (props) => {
   };
 
   const handleNewPost = async () => {
-    try {
-      if (img !== null) {
-        const imgRef = ref(imageDb, `files/${v4()}`);
-        const snapshot = await uploadBytes(imgRef, img.file);
-        const url = await getDownloadURL(snapshot.ref);
-
-        // Construct the post body
-        const body = {
-          image: url.toString(),
-          content: inputValue,
-          author: authUser.user._id,
-          likes: [],
-          comments: [],
-          share: [],
-        };
-        console.log("Check body", body);
-        const response = await instance.post("/api/new/post", body);
-
-        // const response = await handleAddNewPost(body);
-
-        if (response) {
-          toast.success("Tạo bài viết thành công");
-          setImg(null);
-          setInputValue("");
-          navigate("/");
-        }
-      }
-    } catch (error) {
-      toast.error("Tạo bài viết không thành công");
-      console.error("Error creating post:", error);
-    }
+    createPost(inputValue, img, setImg, setInputValue, setModalShow);
   };
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -223,7 +185,7 @@ const CreatePost = (props) => {
               </div>
             </div>
           )}
-          {!isOpenAddImage && isOpenImage && (
+          {!isOpenAddImage && isOpenImage && img && (
             <div className="create-image">
               <img className="create-image-image" src={img.url} />
             </div>

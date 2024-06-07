@@ -4,24 +4,25 @@ import { WiDirectionLeft } from "react-icons/wi";
 import { BsX } from "react-icons/bs";
 import useComponentVisible from "../../hooks/useComponentVisible.jsx";
 const LeftHeader = () => {
-    const { ref, isComponentVisible, setIsComponentVisible } =
-      useComponentVisible(false);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible(false);
 
-    const changeButton = () => {
-      setIsComponentVisible(!isComponentVisible);
-    };
+  const changeButton = () => {
+    setIsComponentVisible(!isComponentVisible);
+  };
 
   return (
+    //tim kiem fb
     <div className="h-full leftheader">
       {!isComponentVisible ? (
         <div className="flex w-[304px] pl-[16px]">
           <Link to={"/"} className="w-[40px] rounded-full">
             <img src="/src/assets/Facebook_Logo_(2019).png" alt="logo" />
           </Link>
-          <div className="w-[237px] flex bg-slate-600 rounded-full pl-3 ml-[7px]">
+          <div className="w-[237px] flex bg-[#F0F2F5] rounded-full pl-3 ml-[7px]">
             <CiSearch className="mt-[13px] text-gray-300 mr-2 text-md " />
             <input
-              className="border-none bg-slate-600 focus:border-transparent focus:outline-none w-13 rounded-full"
+              className="border-none bg-[#F0F2F5] focus:border-transparent focus:outline-none w-13 rounded-full"
               placeholder="Tìm kiếm trên facebook"
               onClick={changeButton}
             />
@@ -40,9 +41,9 @@ const LeftHeader = () => {
             >
               <WiDirectionLeft className="text-4xl rounded-full" />
             </div>
-            <div className="w-[235px] flex bg-slate-600 rounded-full pl-3 ml-[15px] mb-2 h-[38px]">
+            <div className="w-[235px] flex bg-[#F0F2F5] rounded-full pl-3 ml-[15px] mb-2 h-[38px]">
               <input
-                className="border-none bg-slate-600 focus:border-transparent focus:outline-none w-13 rounded-full"
+                className="border-none bg-[#F0F2F5] focus:border-transparent focus:outline-none w-13 rounded-full"
                 placeholder="Tìm kiếm trên facebook"
               />
             </div>

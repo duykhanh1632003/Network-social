@@ -22,7 +22,11 @@ const Posts = () => {
         </button>
       </div>
 
-      <CreatePost show={modalShow} onHide={() => setModalShow(false)} />
+      <CreatePost
+        show={modalShow}
+        setModalShow={setModalShow}
+        onHide={() => setModalShow(false)}
+      />
     </div>
   );
 };
