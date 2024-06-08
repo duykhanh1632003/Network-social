@@ -7,15 +7,16 @@ import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PostContextProvider } from "./context/PostContext.jsx";
-import { ListPostContextProvider } from "./context/ListPostContext.jsx";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.js";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContextProvider>
         <PostContextProvider>
-          <ListPostContextProvider>
+          <Provider store={store}>
             <App />
-          </ListPostContextProvider>
+          </Provider>
         </PostContextProvider>
         <ToastContainer />
       </AuthContextProvider>

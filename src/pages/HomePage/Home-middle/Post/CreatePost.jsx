@@ -8,8 +8,9 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { TiFolderAdd } from "react-icons/ti";
 import { MdOutlineCancel } from "react-icons/md";
-import { useListPostContext } from "../../../../context/ListPostContext";
-
+import { useDispatch } from "react-redux";
+import { createNewPost } from "../../../../redux/post/postsThunks";
+import { useAuthContext } from "../../../../context/AuthContext";
 const CreatePost = ({ show, onHide, setModalShow }) => {
   const [inputValue, setInputValue] = useState("");
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
@@ -19,7 +20,9 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
   const [isOpenAddImage, setIsOpenAddImage] = useState(false);
   const [isOpenImage, setIsOpenImage] = useState(false);
   const [isOpenCancel, setIsOpenCancel] = useState(false);
-  const { createPost } = useListPostContext();
+  const dispatch = useDispatch();
+  const { authUser } = useAuthContext();
+
   const handleChange = (e) => {
     setInputValue(e.target.value);
     setCursor(e.target.selectionStart);
@@ -81,8 +84,17 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
     e.preventDefault();
   };
 
-  const handleNewPost = async () => {
-    createPost(inputValue, img, setImg, setInputValue, setModalShow);
+  const handleNewPost = () => {
+    dispatch(
+      createNewPost({
+        inputValue,
+        img,
+        setImg,
+        setInputValue,
+        setModalShow,
+        authUser,
+      })
+    );
   };
 
   return (
