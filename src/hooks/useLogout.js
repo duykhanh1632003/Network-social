@@ -8,7 +8,7 @@ const useLogout = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
   const navigate = useNavigate();
-  const instance = axiosHaveAuth();
+  const instance = axiosHaveAuth(); 
   const logout = async () => {
     setLoading(true);
     try {

@@ -6,11 +6,11 @@ import {
   fetchPostsFailure,
   addPost,
 } from "./postsSlice";
-import { axiosHaveAuth } from "../../util/axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { imageDb } from "../../config/FireBaseUrl";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
+import { postRequest } from "../../util/services";
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
@@ -32,8 +32,6 @@ export const createNewPost = createAsyncThunk(
     { dispatch }
   ) => {
     try {
-      const instance = axiosHaveAuth();
-
       console.log("Creating new post..."); // Add this
       let url = "";
       if (img !== null) {
@@ -51,7 +49,7 @@ export const createNewPost = createAsyncThunk(
         share: [],
       };
 
-      const response = await instance.post("/api/new/post", body);
+      const response = await postRequest(`/api/new/post`, body, authUser);
 
       if (response) {
         console.log("Post created successfully:", response.data); // Add this

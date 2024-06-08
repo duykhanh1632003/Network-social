@@ -10,6 +10,8 @@ import { useAuthContext } from "./context/AuthContext";
 import { useEffect } from "react";
 import DetailPost from "./pages/HomePage/Home-middle/Post/detail/DetailPost";
 import FriendLayout from "./pages/Friends/FriendLayout";
+import ProfileLayout from "./pages/Profile/ProfileLayout";
+import HomeProfile from "./pages/Profile/HomeProfile";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -39,8 +41,16 @@ function App() {
         />
         <Route element={authUser ? <FriendLayout /> : <Navigate to="/login" />}>
           <Route
-            path="/friends"
+            path="/:id"
             element={authUser ? <FriendContainer /> : <Navigate to="/login" />}
+          />
+        </Route>
+        <Route
+          element={authUser ? <ProfileLayout /> : <Navigate to="/login" />}
+        >
+          <Route
+            path="/:id"
+            element={authUser ? <HomeProfile /> : <Navigate to="/login" />}
           />
         </Route>
       </Routes>

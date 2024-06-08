@@ -7,9 +7,10 @@ const FriendContainer = () => {
         <div className="text-2xl font-bold">Lời mời kết bạn</div>
         <div className="text-[#396cc9]">Xem tất cả</div>
       </div>
-      <div>
+      <div className="overflow-y-auto	">
         <FriendRequest />
       </div>
+      <div className="h-[100px]"></div>
     </div>
   );
 };

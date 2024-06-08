@@ -4,8 +4,6 @@ import { useAuthContext } from "../context/AuthContext";
 const axiosHaveAuth = () => {
   const { authUser } = useAuthContext();
 
-  console.log("user:", authUser); // Check if user object is defined and contains the expected properties
-
   const instance = axios.create({
     baseURL: "http://localhost:8000/v1",
     headers: {
