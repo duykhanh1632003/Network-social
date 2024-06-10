@@ -7,4 +7,6 @@ router.use(apiKey);
 router.use(permission("0000"));
 router.use("/v1/api", require("./user"));
 router.use("/v1/api", require("./post"));
+router.use("/v1/api", require("./friend"));
+
 module.exports = router;

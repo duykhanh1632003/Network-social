@@ -2,8 +2,8 @@
 
 const mongoose = require("mongoose");
 
-const DOCUMENT_NAME = "FriendRequest";
-const COLLECTION_NAME = "friendrequests";
+const DOCUMENT_NAME = "friendRequest";
+const COLLECTION_NAME = "friendRequests";
 
 const friendRequestSchema = new mongoose.Schema(
   {
@@ -20,9 +20,7 @@ const friendRequestSchema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
-  { timestamps: true, collection: COLLECTION_NAME } 
+  { timestamps: true, collection: COLLECTION_NAME }
 );
 
-module.exports = {
-  FriendRequest: mongoose.model(DOCUMENT_NAME, friendRequestSchema),
-};
+module.exports = mongoose.model(DOCUMENT_NAME, friendRequestSchema);

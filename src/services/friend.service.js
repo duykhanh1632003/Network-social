@@ -1,45 +1,73 @@
-const { User } = require("./models/User");
-const { FriendRequest } = require("./models/FriendRequest");
-const { FriendList } = require("./models/FriendList");
+"use strict";
 
-// Chấp nhận yêu cầu kết bạn và thêm bạn vào danh sách bạn bè
-const acceptFriendRequest = async (requestId) => {
-  try {
-    const request = await FriendRequest.findById(requestId);
-    if (request) {
-      request.status = "accepted";
-      await request.save();
+const { default: mongoose } = require("mongoose");
+const friendList = require("../models/friendList");
+const friendRequest = require("../models/friendRequest");
+const { user } = require("../models/user.model");
+const { BadRequestError } = require("../core/error.response");
 
-      // Thêm bạn bè vào danh sách của người gửi
-      await FriendList.updateOne(
-        { user: request.sender },
-        { $addToSet: { friends: request.receiver } },
-        { upsert: true }
+class FriendService {
+  static getNonFriends = async (userId) => {
+    try {
+      // Lấy danh sách bạn bè
+      const friendLists = await friendList.findOne({ user: userId }).exec();
+      const friends = friendLists ? friendLists.friends : [];
+
+      // Lấy danh sách đã gửi lời mời
+      const sendRequests = await friendRequest.find({ sender: userId }).exec();
+      const sentRequestIds = sendRequests.map((request) => request.receiver);
+
+      // Lấy danh sách lời mời đã nhận
+      const receivedRequests = await friendRequest
+        .find({ receiver: userId })
+        .exec();
+      const receivedRequestIds = receivedRequests.map(
+        (request) => request.sender
       );
 
-      // Thêm bạn bè vào danh sách của người nhận
-      await FriendList.updateOne(
-        { user: request.receiver },
-        { $addToSet: { friends: request.sender } },
-        { upsert: true }
+      const excludedIds = [
+        ...friends,
+        ...sentRequestIds,
+        ...receivedRequestIds,
+        new mongoose.Types.ObjectId(userId),
+      ];
+
+      // Lấy danh sách người dùng không phải bạn bè
+      const nonFriends = await user.find({ _id: { $nin: excludedIds } }).exec();
+
+      // Tính toán bạn chung cho mỗi người dùng không phải bạn bè
+      const nonFriendsWithMutualFriends = await Promise.all(
+        nonFriends.map(async (nonFriend) => {
+          const nonFriendList = await friendList
+            .findOne({ user: nonFriend._id })
+            .exec();
+          const nonFriendFriends = nonFriendList ? nonFriendList.friends : [];
+
+          const mutualFriends = nonFriendFriends.filter((nonFriendFriend) =>
+            friends.includes(nonFriendFriend.toString())
+          );
+
+          // Lấy thông tin chi tiết của bạn chung
+          const mutualFriendsDetails = await user
+            .find({ _id: { $in: mutualFriends } })
+            .exec();
+
+          return {
+            nonFriend: nonFriend,
+            mutualFriends: mutualFriendsDetails.map((friend) => ({
+              userId: friend._id,
+              avatar: friend.avatar,
+            })),
+          };
+        })
       );
 
-      console.log("Friend request accepted and friends added successfully!");
-    } else {
-      console.log("Friend request not found!");
+      return nonFriendsWithMutualFriends;
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestError("Error fetching non-friends", e);
     }
-  } catch (error) {
-    console.error("Error accepting friend request:", error);
-  }
-};
+  };
+}
 
-// Lấy danh sách bạn bè của người dùng
-const getFriendList = async (userId) => {
-  try {
-    const friendList = await FriendList.findOne({ user: userId }).populate("friends");
-    return friendList ? friendList.friends : [];
-  } catch (error) {
-    console.error("Error getting friend list:", error);
-    return [];
-  }
-};
+module.exports = FriendService;
