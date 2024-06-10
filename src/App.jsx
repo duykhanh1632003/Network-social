@@ -41,7 +41,7 @@ function App() {
         />
         <Route element={authUser ? <FriendLayout /> : <Navigate to="/login" />}>
           <Route
-            path="/:id"
+            path="/friends/:id"
             element={authUser ? <FriendContainer /> : <Navigate to="/login" />}
           />
         </Route>
