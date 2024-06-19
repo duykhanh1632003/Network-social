@@ -17,7 +17,7 @@ const FriendCanKnow = () => {
   };
 
   return (
-    <div className="flex flex-wrap pt-2 ml-7 justify-start overflow-y-auto">
+    <div className="flex flex-wrap pt-2 ml-7 justify-start overflow-y-auto !z-1">
       {friendRequests.slice(0, visibleCount).map((request) => (
         <div
           key={request.id}
@@ -33,10 +33,10 @@ const FriendCanKnow = () => {
             <div className="h-[16px] w-[24px] flex">
               <div className="avatar-group">
                 <div className="avatar">
-                  <img src={request.imageUrl} alt="Avatar" />
+                  <img className="" src={request.imageUrl} alt="Avatar" />
                 </div>
                 <div className="avatar">
-                  <img src={request.imageUrl} alt="Avatar" />
+                  <img className="z-1" src={request.imageUrl} alt="Avatar" />
                 </div>
               </div>
             </div>

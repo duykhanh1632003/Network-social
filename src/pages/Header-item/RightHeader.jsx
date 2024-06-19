@@ -6,7 +6,7 @@ import HeaderAvatar from "./HeaderAvatar/HeaderAvatar";
 
 const RightHeader = () => {
   return (
-    <div className=" flex">
+    <div className=" flex z-10">
       <div className="box-right-top-bar-item">
         <div>
           <ChangeDarkMode />

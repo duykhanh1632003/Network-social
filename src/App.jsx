@@ -41,7 +41,7 @@ function App() {
         />
         <Route element={authUser ? <FriendLayout /> : <Navigate to="/login" />}>
           <Route
-            path="/friends/:id"
+            path="/friends"
             element={authUser ? <FriendContainer /> : <Navigate to="/login" />}
           />
         </Route>
@@ -49,7 +49,7 @@ function App() {
           element={authUser ? <ProfileLayout /> : <Navigate to="/login" />}
         >
           <Route
-            path="/:id"
+            path="/profile/:id"
             element={authUser ? <HomeProfile /> : <Navigate to="/login" />}
           />
         </Route>
