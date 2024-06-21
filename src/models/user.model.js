@@ -15,7 +15,11 @@ const userSchema = new mongoose.Schema(
     address: { type: String },
     gender: { type: String, enum: ["male", "female", "other"], required: true }, // Giới tính
     dateOfBirth: { type: Date }, // Ngày sinh
-    avatar: { type: String }, // Đường dẫn đến hình ảnh đại diện
+    avatar: {
+      type: String,
+      default:
+        "https://user-images.githubusercontent.com/11250/39013954-f5091c3a-43e6-11e8-9cac-37cf8e8c8e4e.jpg",
+    }, // Đường dẫn đến hình ảnh đại diện
     savePosts: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
       default: [],

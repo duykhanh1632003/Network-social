@@ -11,7 +11,14 @@ const findByPhoneNumber = async ({
 
 const findByEmail = async ({
   email,
-  select = { firstName: 1, lastName: 1, password: 1, email: 1, phoneNumber: 1 },
+  select = {
+    firstName: 1,
+    lastName: 1,
+    password: 1,
+    email: 1,
+    phoneNumber: 1,
+    avatar: 1,
+  },
 }) => {
   return await user.findOne({ email: email }).select(select).lean();
 };

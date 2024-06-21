@@ -85,7 +85,7 @@ class AccessService {
   };
   static logout = async (keystore) => {
     const deleteKey = await KeyTokenService.removeKeyById(keystore._id);
-    return deleteKey; 
+    return deleteKey;
   };
   static login = async ({ email, password, refreshToken = null }) => {
     const foundUser = await findByEmail({ email });
@@ -114,7 +114,7 @@ class AccessService {
     });
     return {
       user: getInfoData({
-        fields: ["_id", "name", "email"],
+        fields: ["_id", "name", "email", "avatar", "firstName", "lastName"],
         object: foundUser,
       }),
       tokens,
