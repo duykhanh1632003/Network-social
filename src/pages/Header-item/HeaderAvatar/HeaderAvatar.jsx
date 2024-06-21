@@ -3,12 +3,15 @@ import { useEffect } from "react";
 import useComponentHideAvatar from "../../../hooks/useComponentHideAvatar";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import useLogout from "../../../hooks/useLogout";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const HeaderAvatar = () => {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentHideAvatar(false);
 
   const { logout } = useLogout();
+  const { authUser } = useAuthContext();
 
   const handleLogout = async () => {
     await logout();
@@ -33,8 +36,8 @@ const HeaderAvatar = () => {
       >
         <div>
           <img
-            src="/src/assets/328619176_717087896492083_6413426032507387658_n.jpg"
-            className="avatar-topbar"
+            src={authUser.user.avatar}
+            className="rounded-full h-[36px] w-full object-cover"
             alt="Avatar"
           />
         </div>
@@ -47,19 +50,22 @@ const HeaderAvatar = () => {
           style={{ boxShadow: "5px 5px 5px 5px rgb(0 0 0 / 0.1)" }}
           className="absolute mt-[5px]	 p-1 bg-[#FFFFFF] w-[330px] flex flex-col ml-[-290px] rounded-lg pl-[1px]"
         >
-          <div
+          <Link
+            to={`/profile/${authUser.user._id}`}
             style={{ boxShadow: "2px 2px 3px 2px rgb(0 0 0 / 0.1)" }}
             className="h-[60px] w-full p-2 cursor-pointer mb-2 bg-[#FFFFFF] flex items-center text-white rounded-lg hover:bg-[#d7d6d6]"
           >
-            <div className="w-[39px] shadow-2xl	 h-[39px] rounded-full object-fit mr-2  ">
+            <div className="w-[39px] shadow-2xl	 h-[39px] rounded-full object-contain mr-2  ">
               <img
-                className="w-full h-full rounded-full"
-                src="/src/assets/328619176_717087896492083_6413426032507387658_n.jpg"
+                className="w-full h-full rounded-full object-cover"
+                src={authUser.user.avatar}
                 alt="avatar"
               />{" "}
             </div>
-            <div className="text-black font-medium">Hoàng Quốc Toàn</div>
-          </div>
+            <div className="text-black font-medium">
+              {authUser.user.firstName} {authUser.user.lastName}
+            </div>
+          </Link>
           <div
             onClick={handleLogout}
             className="h-[60px] w-full p-2 cursor-pointer bg-[#FFFFFF] flex items-center text-white rounded-lg hover:bg-[#d7d6d6]"

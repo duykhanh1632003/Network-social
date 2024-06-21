@@ -6,22 +6,26 @@ import { RiGroupLine } from "react-icons/ri";
 import { PiClockCounterClockwiseBold } from "react-icons/pi";
 import { IoMdBookmark } from "react-icons/io";
 import { BiSolidChevronDown } from "react-icons/bi";
-import ImageUpload from "../../../components/ImageUpload";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const LeftSideBar = () => {
+  const { authUser } = useAuthContext();
   return (
     <div className="w-[348px] custom-scrollbar pt-[14px] bg-[#F0F2F5] mr-[112px] overflow-auto flex flex-col h-screen">
       <div className="flex h-[48px]  items-center hover:bg-gray-200 hover:rounded-tl-lg hover:rounded-bl-lg cursor-pointer">
         <div className="w-[36px] h-[36px] rounded-full bg-slate-800 flex items-center justify-center ml-[16px] mr-[12px]">
           <img
-            className="rounded-full"
-            src="/src/assets/328619176_717087896492083_6413426032507387658_n.jpg"
+            className="rounded-full w-full h-full object-cover"
+            src={authUser.user.avatar}
             alt="avatar"
           />
         </div>
-        <div className="flex items-center justify-center font-medium">
-          Hoàng Quốc Toàn
-        </div>
+        <Link
+          to={`/profile/${authUser.user._id}`}
+          className="flex items-center justify-center font-medium"
+        >
+          {authUser.user.firstName} {authUser.user.lastName}
+        </Link>
       </div>
       <Link
         to={"/friend"}
