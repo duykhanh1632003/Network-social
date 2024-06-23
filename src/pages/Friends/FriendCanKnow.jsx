@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./FriendCanKnow.css";
 import { axiosHaveAuth } from "../../util/axios";
 import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const FriendCanKnow = () => {
   const instance = axiosHaveAuth();
@@ -38,6 +39,10 @@ const FriendCanKnow = () => {
         setSentRequests((prev) => prev.filter((id) => id !== receiverId));
       });
   };
+  const navigate = useNavigate();
+  const handleToLink = (id) => {
+    navigate(`/profile/${id}`);
+  };
 
   const [visibleCount, setVisibleCount] = useState(10);
 
@@ -52,14 +57,20 @@ const FriendCanKnow = () => {
           key={request.nonFriend._id}
           className="h-[361px] w-[210px] bg-[#F9F9F9] rounded-lg m-[5px] shadow-lg"
         >
-          <div className="h-[210px] w-full object-fill rounded-lg cursor-pointer">
+          <div
+            onClick={() => handleToLink(request.nonFriend._id)}
+            className="h-[210px] w-full object-fill rounded-lg cursor-pointer"
+          >
             <img
               className="rounded-lg object-cover w-full h-full"
               src={request.nonFriend.avatar}
               alt="Profile"
             />
           </div>
-          <div className="pt-[5px] pl-[12px] pr-[12px] font-medium text-md hover:underline cursor-pointer">
+          <div
+            onClick={() => handleToLink(request.nonFriend._id)}
+            className="pt-[5px] pl-[12px] pr-[12px] font-medium text-md hover:underline cursor-pointer"
+          >
             {request.nonFriend.firstName} {request.nonFriend.lastName}
           </div>
           {!sentRequests.includes(request.nonFriend._id) && (

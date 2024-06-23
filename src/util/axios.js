@@ -29,7 +29,7 @@ const axiosHaveAuth = () => {
           if (!refreshToken) throw new Error("No refresh token available");
 
           const response = await axios.post(
-            "http://localhost:8000/v1/refresh-token",
+            "http://localhost:8000/v1/api/user/refreshAccessToken",
             { refreshToken }
           );
           const { accessToken } = response.data.tokens;

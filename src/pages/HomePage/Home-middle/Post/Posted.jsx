@@ -2,7 +2,11 @@ import CommentLikeShare from "./CommentLikeShare";
 import { MdPublic } from "react-icons/md";
 import { BsThreeDots } from "react-icons/bs";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch } from "react-redux";
+
 const Posted = () => {
+  const dispath = useDispatch();
+
   return (
     <div className="w-full  mt-[14px] bg-[#FFFFFF]  rounded-md">
       <div className="flex justify-between pl-[16px] pr-[16px] pt-[10px]">

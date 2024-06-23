@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { axiosHaveAuth, axiosNotHaveAuth } from "./path/to/your/axiosHaveAuth";
+import { axiosNotHaveAuth } from "../util/axios";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const useLogin = () => {
     setLoading(true);
     try {
       const body = JSON.stringify({ email, password });
-      const res = await axiosNotHaveAuth.post("/user/login", body);
+      const res = await axiosNotHaveAuth.post("/api/user/login", body);
       const data = await res.data.metadata;
       if (data.error) {
         throw new Error(data.error);
@@ -23,8 +23,9 @@ const useLogin = () => {
       toast.success("Đăng nhập thành công");
       localStorage.setItem("accessToken", data.tokens.accessToken);
       localStorage.setItem("refreshToken", data.tokens.refreshToken);
-      setAuthUser(data.user);
-      navigate("/dashboard"); // Chuyển hướng sau khi đăng nhập thành công
+      localStorage.setItem("user", JSON.stringify(data));
+      setAuthUser({ user: data.user, tokens: data.tokens });
+      navigate("/"); // Chuyển hướng sau khi đăng nhập thành công
     } catch (error) {
       toast.error(error.message);
     } finally {

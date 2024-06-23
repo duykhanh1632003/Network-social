@@ -13,6 +13,9 @@ const useLogout = () => {
     setLoading(true);
     try {
       localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
       navigate("/login");
 
       const res = await instance.post("/api/user/logout");
