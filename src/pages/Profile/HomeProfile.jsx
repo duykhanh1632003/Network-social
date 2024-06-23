@@ -12,8 +12,8 @@ const HomeProfile = () => {
   return (
     <div>
       {id === authUser.user._id ? (
-        <HeaderProfileMe />
-      ) : (
+        <HeaderProfileMe id={id} />
+      ) : ( 
         <HeaderProfileAnother id={id} />
       )}
     </div>

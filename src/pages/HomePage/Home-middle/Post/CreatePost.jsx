@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import { FaEarthAmericas } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import "./CreatePost.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -11,6 +11,8 @@ import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { createNewPost } from "../../../../redux/post/postsThunks";
 import { useAuthContext } from "../../../../context/AuthContext";
+import classNames from "classnames";
+
 const CreatePost = ({ show, onHide, setModalShow }) => {
   const [inputValue, setInputValue] = useState("");
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
@@ -23,6 +25,17 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
   const dispatch = useDispatch();
   const { authUser } = useAuthContext();
 
+  useEffect(() => {
+    if (img) {
+      setIsOpenAddImage(false);
+      setIsOpenImage(true);
+      setIsOpenCancel(true);
+    } else {
+      setIsOpenImage(false);
+      setIsOpenCancel(false);
+    }
+  }, [img]);
+
   const handleChange = (e) => {
     setInputValue(e.target.value);
     setCursor(e.target.selectionStart);
@@ -34,25 +47,21 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
       emoji.native +
       inputValue.substring(cursor);
     setInputValue(newInputValue);
-    setCursor(cursor + 2); // Tăng con trỏ lên 2 để di chuyển sau emoji đã chọn
+    setCursor(cursor + emoji.native.length);
   };
 
   const handleOnChangeImage = (e) => {
     const file = e.target.files[0];
-    setImg({
-      file: file,
-      name: file.name,
-      url: URL.createObjectURL(file),
-    });
-    setIsOpenAddImage(false);
-    setIsOpenImage(true);
-    setIsOpenCancel(true);
+    if (file) {
+      setImg({
+        file: file,
+        name: file.name,
+        url: URL.createObjectURL(file),
+      });
+    }
   };
 
   const handleCancel = () => {
-    setIsOpenAddImage(false);
-    setIsOpenCancel(false);
-    setIsOpenImage(false);
     setImg(null);
   };
 
@@ -64,20 +73,18 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
 
   const handleOnChangePostPhoto = () => {
     setIsOpenAddImage(true);
-    setIsOpenCancel(true);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    setImg({
-      file: file,
-      name: file.name,
-      url: URL.createObjectURL(file),
-    });
-    setIsOpenAddImage(false);
-    setIsOpenImage(true);
-    setIsOpenCancel(true);
+    if (file) {
+      setImg({
+        file: file,
+        name: file.name,
+        url: URL.createObjectURL(file),
+      });
+    }
   };
 
   const handleDragOver = (e) => {
@@ -115,13 +122,15 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
           <div className="flex">
             <div className="rounded-full h-[42px] w-[42px] mr-[11px]">
               <img
-                className="rounded-full"
-                src="/src/assets/328619176_717087896492083_6413426032507387658_n.jpg"
+                className="rounded-full object-cover h-full w-full"
+                src={authUser.user.avatar}
                 alt="Avatar"
               />
             </div>
             <div className="h-full">
-              <div className="text-sm font-medium">Hoàng Quốc Toàn</div>
+              <div className="text-sm font-medium">
+                {authUser.user.firstName} {authUser.user.lastName}
+              </div>
               <div className="rounded-lg h-[23px] bg-[#E4E6EB] flex items-center text-xs justify-center cursor-pointer font-semibold mb-[16px]">
                 <FaEarthAmericas className="text-xs" />
                 <div className="text-xs ml-[3px] mr-[3px]">Công khai</div>
@@ -138,7 +147,7 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
               value={inputValue}
               onChange={handleChange}
               onKeyPress={handleKeyPress}
-              placeholder="Nguyễn ơi bạn đang nghĩ gì thế?"
+              placeholder={`${authUser.user.lastName} ơi bạn đang nghĩ gì thế?`}
               className="w-full bg-transparent outline-none resize-none text-sm input-textarea"
               cols="30"
               rows="2"
@@ -189,7 +198,7 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
                     ref={fileInputRef}
                     type="file"
                     hidden
-                    onChange={(e) => handleOnChangeImage(e)}
+                    onChange={handleOnChangeImage}
                   />
                   <div className="add-image">Thêm ảnh/video</div>
                   <div className="pull-image">hoặc kéo và thả</div>
@@ -199,7 +208,11 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
           )}
           {!isOpenAddImage && isOpenImage && img && (
             <div className="create-image">
-              <img className="create-image-image" src={img.url} />
+              <img
+                className="create-image-image"
+                src={img.url}
+                alt={img.name}
+              />
             </div>
           )}
           <div className="add-post">
@@ -210,11 +223,10 @@ const CreatePost = ({ show, onHide, setModalShow }) => {
           </div>
           <div
             onClick={handleNewPost}
-            className={
-              inputValue !== "" || img !== null
-                ? "bottom-post-color"
-                : "bottom-post-not-color"
-            }
+            className={classNames({
+              "bottom-post-color": inputValue !== "" || img !== null,
+              "bottom-post-not-color": inputValue === "" && img === null,
+            })}
           >
             Đăng
           </div>

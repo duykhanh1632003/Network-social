@@ -1,4 +1,3 @@
-import React from "react";
 import "./LeftSideBarFriend.css"; // Đảm bảo bạn đã nhập file CSS
 import { RiSettings5Fill } from "react-icons/ri";
 import { FaUserFriends } from "react-icons/fa";

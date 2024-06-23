@@ -10,14 +10,14 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { imageDb } from "../../config/FireBaseUrl";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
-import { postRequest } from "../../util/services";
+import { getRequest, postRequest } from "../../util/services";
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, thunkAPI) => {
     thunkAPI.dispatch(fetchPostsStart());
     try {
-      const response = await axios.get("/api/posts");
+      const response = await getRequest("/api/posts");
       thunkAPI.dispatch(fetchPostsSuccess(response.data));
     } catch (error) {
       thunkAPI.dispatch(fetchPostsFailure(error.toString()));
