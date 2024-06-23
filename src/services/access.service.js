@@ -13,6 +13,26 @@ const { getInfoData } = require("../utils");
 const KeyTokenService = require("./keyToken.service");
 
 class AccessService {
+  static refreshAccessToken = async (refreshToken) => {
+    const holderUser = await KeyTokenService.findByRefreshToken(refreshToken);
+    if (!holderUser) throw new BadRequestError("Invalid refresh token");
+
+    try {
+      const { userId, email } = verifyToken(
+        refreshToken,
+        holderUser.privateKey
+      );
+      const tokens = await createTokenPair(
+        { userId, email },
+        holderUser.publicKey,
+        holderUser.privateKey
+      );
+
+      return { tokens: { accessToken: tokens.accessToken } };
+    } catch (err) {
+      throw new RefreshTokenError("Refresh token expired");
+    }
+  };
   static handlerRefreshToken = async (refreshToken) => {
     // Tìm ra refreshToken được sử dụng hay chưa
     const foundToken = await KeyTokenService.foundByRefreshTokenUsed(

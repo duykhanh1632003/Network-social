@@ -3,6 +3,9 @@
 const { BadRequestError } = require("../core/error.response");
 const { post } = require("../models/post.model");
 const { user } = require("../models/user.model");
+const { likeComment } = require("../models/likeComment.model");
+const { comment } = require("../models/comment.model");
+const friendList = require("../models/friendList");
 
 class PostService {
   static createPost = async ({
@@ -46,7 +49,7 @@ class PostService {
     if (!existingPost) {
       throw new Error("Bài đăng không tồn tại");
     }
-    const findUser = user.findById(userId);
+    const findUser = await user.findById(userId);
     if (!findUser) {
       throw new BadRequestError("Không tìm được user");
     }
@@ -57,6 +60,29 @@ class PostService {
       findUser.savePosts.push(userId);
     }
     await findUser.save();
+  };
+
+  static handleGetAllPosts = async (userId) => {
+    const posts = await post
+      .find()
+      .populate("author", "firstName lastName avatar")
+      .populate("comments");
+    const friendLists = await friendList.find({ user: userId });
+
+    const allPosts = posts.filter((p) =>
+      friendLists.some((fl) => fl.friends.includes(p.author._id))
+    );
+
+    const postsWithComments = await Promise.all(
+      allPosts.map(async (p) => {
+        const comments = await comment
+          .find({ postId: p._id })
+          .populate("userId", "firstName lastName avatar");
+        return { ...p._doc, comments };
+      })
+    );
+
+    return postsWithComments;
   };
 }
 

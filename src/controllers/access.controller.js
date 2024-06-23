@@ -29,6 +29,11 @@ class AccessController {
       options: { limit: 10 },
     }).send(res);
   };
+  static refreshAccessToken = async (req, res) => {
+    const { refreshToken } = req.body;
+    const result = await AccessService.refreshAccessToken(refreshToken);
+    return res.status(200).json(result);
+  };
 }
 
 module.exports = new AccessController();
