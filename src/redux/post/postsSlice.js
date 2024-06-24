@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPosts, createNewPost, likePost } from "./postsThunks";
+import { createNewPost, likePost } from "./postsThunks";
 
 const postsSlice = createSlice({
   name: "posts",
@@ -35,21 +35,9 @@ const postsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchPosts.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchPosts.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.list = action.payload;
-      })
-      .addCase(fetchPosts.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      })
-      .addCase(createNewPost.fulfilled, (state, action) => {
-        state.list.unshift(action.payload);
-      });
+    builder.addCase(createNewPost.fulfilled, (state, action) => {
+      state.list.unshift(action.payload);
+    });
   },
 });
 
