@@ -3,9 +3,12 @@ import SlickCarousel from "./SlickCarousel";
 import Status from "./Post/Status";
 import "./MiddleSideBar.css"; // Import file for custom styles
 import Posted from "./Post/Posted";
+import { useDispatch } from "react-redux";
+import { fetchPosts } from "../../../redux/post/postsThunks";
 
 const MiddleSideBar = () => {
   const middleRef = useRef();
+  const dispatch = useDispatch();
 
   const handleScroll = () => {
     if (middleRef.current) {
@@ -13,6 +16,9 @@ const MiddleSideBar = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]); // Đảm bảo dispatch được gọi đúng
   useEffect(() => {
     // Thêm sự kiện lắng nghe cuộn trang
     window.addEventListener("scroll", handleScroll);
@@ -30,7 +36,6 @@ const MiddleSideBar = () => {
     >
       <SlickCarousel />
       <Status />
-      <Posted />
       <Posted />
       <div className="h-[100px] w-full mt-5 items-center flex justify-center"></div>
     </div>

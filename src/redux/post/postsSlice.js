@@ -1,29 +1,55 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-const initialState = {
-  list: [],
-  status: 'idle',
-  error: null,
-};
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchPosts, createNewPost, likePost } from "./postsThunks";
 
 const postsSlice = createSlice({
-  name: 'posts',
-  initialState,
+  name: "posts",
+  initialState: {
+    list: [],
+    status: "idle",
+    error: null,
+  },
   reducers: {
     fetchPostsStart(state) {
-      state.status = 'loading';
+      state.status = "loading";
     },
     fetchPostsSuccess(state, action) {
-      state.status = 'succeeded';
+      state.status = "succeeded";
       state.list = action.payload;
     },
     fetchPostsFailure(state, action) {
-      state.status = 'failed';
+      state.status = "failed";
       state.error = action.payload;
     },
     addPost(state, action) {
-      state.list.push(action.payload);
+      state.list.unshift(action.payload);
     },
+    likePostSuccess(state, action) {
+      const { postId, userId } = action.payload;
+      const post = state.list.find((post) => post._id === postId);
+      if (post) {
+        post.likes.push(userId);
+      }
+    },
+    likePostFailure(state, action) {
+      state.error = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPosts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.list = action.payload;
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(createNewPost.fulfilled, (state, action) => {
+        state.list.unshift(action.payload);
+      });
   },
 });
 
@@ -32,6 +58,8 @@ export const {
   fetchPostsSuccess,
   fetchPostsFailure,
   addPost,
+  likePostSuccess,
+  likePostFailure,
 } = postsSlice.actions;
 
 export default postsSlice.reducer;

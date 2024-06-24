@@ -36,7 +36,9 @@ export const getRequest = async (url) => {
 };
 
 export const getRequestHaveBody = async (url, body, authUser) => {
-  const response = await fetch(url, {
+  const URL = baseUrl + url;
+
+  const response = await fetch(URL, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

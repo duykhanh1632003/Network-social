@@ -5,19 +5,25 @@ import {
   fetchPostsSuccess,
   fetchPostsFailure,
   addPost,
+  likePostSuccess,
+  likePostFailure,
 } from "./postsSlice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { imageDb } from "../../config/FireBaseUrl";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { getRequest, postRequest } from "../../util/services";
+import { axiosHaveAuth } from "../../util/axios";
 
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, thunkAPI) => {
     thunkAPI.dispatch(fetchPostsStart());
     try {
-      const response = await getRequest("/api/posts");
+      console.log("da o day");
+      const instance = axiosHaveAuth();
+      const response = await instance.get("/api/get/allPosts");
+      console.log("Check res", response);
       thunkAPI.dispatch(fetchPostsSuccess(response.data));
     } catch (error) {
       thunkAPI.dispatch(fetchPostsFailure(error.toString()));
@@ -32,7 +38,7 @@ export const createNewPost = createAsyncThunk(
     { dispatch }
   ) => {
     try {
-      console.log("Creating new post..."); // Add this
+      console.log("Creating new post...");
       let url = "";
       if (img !== null) {
         const imgRef = ref(imageDb, `files/${v4()}`);
@@ -52,7 +58,7 @@ export const createNewPost = createAsyncThunk(
       const response = await postRequest(`/api/new/post`, body, authUser);
 
       if (response) {
-        console.log("Post created successfully:", response.data); // Add this
+        console.log("Post created successfully:", response.data);
         toast.success("Tạo bài viết thành công");
         setImg(null);
         setInputValue("");
@@ -61,7 +67,23 @@ export const createNewPost = createAsyncThunk(
       }
     } catch (error) {
       toast.error("Tạo bài viết không thành công");
-      console.error("Error creating post:", error); // Add this
+      console.error("Error creating post:", error);
+    }
+  }
+);
+
+export const likePost = createAsyncThunk(
+  "posts/likePost",
+  async ({ postId, userId }, thunkAPI) => {
+    try {
+      const instance = axiosHaveAuth();
+      const response = await instance.post(`/api/like/post`, {
+        postId,
+        userId,
+      });
+      thunkAPI.dispatch(likePostSuccess({ postId, userId }));
+    } catch (error) {
+      thunkAPI.dispatch(likePostFailure(error.toString()));
     }
   }
 );
