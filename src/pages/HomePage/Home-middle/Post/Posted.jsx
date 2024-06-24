@@ -119,7 +119,7 @@ const Posted = () => {
               </div>
             </div>
             <div className="pl-[8px] pr-[8px] pt-[8px] pb-[8px] mt-[4px]">
-              {/* <CommentLikeShare postId={post._id} /> */}
+              <CommentLikeShare postId={post._id} />
             </div>
           </div>
         );
