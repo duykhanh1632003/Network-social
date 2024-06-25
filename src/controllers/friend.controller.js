@@ -4,7 +4,6 @@ const FriendService = require("../services/friend.service");
 
 class FriendController {
   handleGetNoneFriend = async (req, res, next) => {
-    console.log("check query", req.query);
 
     const data = await FriendService.getNonFriends(req.query.userId);
     new SuccessResponse({

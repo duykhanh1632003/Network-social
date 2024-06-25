@@ -1,8 +1,9 @@
 "use strict";
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("../helpers/asyncHandler");
-const { NotFoundError, AuthFailError } = require("../core/error.response");
+const { NotFoundError, AuthFailureError } = require("../core/error.response");
 const { findByUserId } = require("../services/keyToken.service");
+
 const HEADER = {
   API_KEY: "x-api-key",
   AUTHORIZATION: "authorization",
@@ -12,73 +13,72 @@ const HEADER = {
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
   try {
-    const accessToken = await jwt.sign(payload, publicKey, {
-      expiresIn: "2 days",
-    });
-    const refreshToken = await jwt.sign(payload, privateKey, {
-      expiresIn: "7 days",
-    });
+    const accessToken = jwt.sign(payload, publicKey, { expiresIn: "2 days" });
+    const refreshToken = jwt.sign(payload, privateKey, { expiresIn: "7 days" });
 
-    jwt.verify(accessToken, publicKey, (err, decode) => {
-      if (err) {
-        console.log("Error verifying token:", err);
-      } else {
-        console.log("decode verify", decode);
-      }
-    });
+    // Uncomment this if you need to verify tokens during creation
+    // jwt.verify(accessToken, publicKey, (err, decode) => {
+    //   if (err) {
+    //     console.log("Error verifying token:", err);
+    //   } else {
+    //     console.log("decode verify", decode);
+    //   }
+    // });
+
     return { accessToken, refreshToken };
   } catch (e) {
+    console.error("Error creating token pair:", e);
     throw e;
   }
 };
+
 const authentication = asyncHandler(async (req, res, next) => {
-  /* 1. Check userId missing??
-  2 .get accessToken
-  3. verifyToken
-  4. check user in dbs
-  5, Check keystore with this userId
-  6. Return next
-  */
-
   const userId = req.headers[HEADER.CLIENT_ID];
-  if (!userId) throw new AuthFailError("userId Invalid request");
+  if (!userId) throw new AuthFailureError("Invalid request: userId missing");
 
-  //2
   const keyStore = await findByUserId(userId);
-  if (!keyStore) throw new NotFoundError("keyStore not found request");
+  if (!keyStore) throw new NotFoundError("KeyStore not found");
 
-  if (req.headers[HEADER.REFRESHTOKEN]) {
+  const refreshToken = req.headers[HEADER.REFRESHTOKEN];
+  if (refreshToken) {
     try {
-      const refreshToken = req.headers[HEADER.REFRESHTOKEN];
-      const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
-      if (userId !== decodeUser.userId)
-        throw new AuthFailureError("Invalid decodeUser");
-      console.log("check decode", decodeUser);
+      const decodedUser = jwt.verify(refreshToken, keyStore.privateKey);
+      if (userId !== decodedUser.userId)
+        throw new AuthFailureError("Invalid user");
+
       req.keyStore = keyStore;
-      req.user = decodeUser;
+      req.user = decodedUser;
       req.refreshToken = refreshToken;
     } catch (error) {
+      console.error("Error verifying refresh token:", error);
       throw error;
     }
   }
-  //3
+
   const accessToken = req.headers[HEADER.AUTHORIZATION];
-  if (!accessToken) throw new NotFoundError("accessToken not found request");
+  if (!accessToken) throw new NotFoundError("Access token not found");
 
   try {
-    const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
-    if (userId !== decodeUser.userId)
-      throw new AuthFailureError("Invalid decodeUser");
+    const decodedUser = jwt.verify(accessToken, keyStore.publicKey);
+    if (userId !== decodedUser.userId)
+      throw new AuthFailureError("Invalid user");
+    req.userId = keyStore.userId;
     req.keyStore = keyStore;
+    req.user = decodedUser;
     return next();
   } catch (error) {
+    console.error("Error verifying access token:", error);
     throw error;
   }
 });
 
 const verifyToken = (token, keySecret) => {
-  const decodedToken = jwt.verify(token, keySecret);
-  return decodedToken;
+  try {
+    return jwt.verify(token, keySecret);
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    throw error;
+  }
 };
 
 module.exports = {

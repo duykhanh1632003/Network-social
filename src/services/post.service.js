@@ -6,6 +6,7 @@ const { user } = require("../models/user.model");
 const { likeComment } = require("../models/likeComment.model");
 const { comment } = require("../models/comment.model");
 const friendList = require("../models/friendList");
+const mongoose = require("mongoose");
 
 class PostService {
   static createPost = async ({
@@ -67,12 +68,25 @@ class PostService {
       .find()
       .populate("author", "firstName lastName avatar")
       .populate("comments");
+
     const friendLists = await friendList.find({ user: userId });
 
-    const allPosts = posts.filter((p) =>
-      friendLists.some((fl) => fl.friends.includes(p.author._id))
-    );
+    // Tạo một mảng chứa tất cả các ID của bạn bè
+    const friendIds = friendLists.reduce((acc, fl) => {
+      return acc.concat(fl.friends);
+    }, []);
 
+    // Thêm ID của bản thân người dùng vào mảng friendIds
+    friendIds.push(new mongoose.Types.ObjectId(userId));
+    console.log("check fri", friendIds);
+
+    // Lọc bài đăng của bạn bè và của bản thân
+    const allPosts = posts.filter((p) =>
+      friendIds.some((id) => id.equals(p.author._id))
+    );
+    console.log("Check all", allPosts);
+
+    // Lấy tất cả các comments cho các bài đăng đã lọc
     const postsWithComments = await Promise.all(
       allPosts.map(async (p) => {
         const comments = await comment
@@ -81,7 +95,7 @@ class PostService {
         return { ...p._doc, comments };
       })
     );
-
+    console.log("postsWithComments", postsWithComments);
     return postsWithComments;
   };
 }

@@ -8,8 +8,11 @@ class PostController {
     new SuccessResponse(data).send(res);
   };
   handleGetAllPosts = async (req, res, next) => {
-    const data = await PostService.handleGetAllPosts(req.user.userId);
-    new SuccessResponse({ message: "get Post success", data: data }).send(res);
+    const response = await PostService.handleGetAllPosts(req.user.userId);
+    new SuccessResponse({
+      message: "Get  non-friends success",
+      metadata: response,
+    }).send(res);
   };
 }
 

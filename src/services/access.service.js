@@ -38,7 +38,6 @@ class AccessService {
     const foundToken = await KeyTokenService.foundByRefreshTokenUsed(
       refreshToken
     );
-    console.log("Check refresh", foundToken);
     if (foundToken) {
       const { userId, email } = await verifyToken(
         refreshToken,

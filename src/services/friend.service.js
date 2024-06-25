@@ -9,8 +9,6 @@ const { BadRequestError } = require("../core/error.response");
 class FriendService {
   static getNonFriends = async (userId) => {
     try {
-      console.log("check userId", userId);
-
       // Lấy danh sách bạn bè, lời mời đã gửi và nhận song song
       const [friendLists, sentRequests, receivedRequests] = await Promise.all([
         friendList.findOne({ user: userId }).lean().exec(),

@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use(authentication);
 router.post("/new/post", asyncHandler(PostController.handleAddNewPost));
-router.post("/get/allPosts", asyncHandler(PostController.handleGetAllPosts));
+router.get("/get/allPosts", asyncHandler(PostController.handleGetAllPosts));
 
 module.exports = router;
